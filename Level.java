@@ -1,19 +1,20 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Level{
+    private Map map;
     private Player p;
     private ArrayList e;
-    private Map map;
     public static final int WIDTH = 2560, HEIGHT = 1600;
     public Level(){
-	p = new Player(320,240);
-	e = new ArrayList();
-	for(int i=0;i<5;i++){
-	    e.add(new Enemy(Math.random()*(GamePanel.WIDTH-200)+100,Math.random()*(GamePanel.HEIGHT-200)+100));
-	}
 	map = new Map();
+	p = new Player(map,320,240);
+	e = new ArrayList();
+	for(int i=0;i<25;i++){
+	    e.add(new Enemy(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
+	}
     }
     public void update(){
+	map.setPos(p.getPos(),p.getMapPos());
 	for(int i=0;i<e.size();i++){
 	    ((Enemy)(e.get(i))).update();
 	    ((Enemy)(e.get(i))).insight(p.getPos());

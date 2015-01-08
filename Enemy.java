@@ -5,8 +5,8 @@ public class Enemy extends Organism{
     private double[] viewx = new double[3],viewy = new double[3];
     private boolean inview = false;
     private double targetx,targety;
-    public Enemy(double x,double y){
-	super(x,y);
+    public Enemy(Map map,double x,double y){
+	super(map,x,y);
 	try{
 	    img = ImageIO.read(getClass().getResourceAsStream("biter.png"));
 	} catch(Exception e){
@@ -14,23 +14,22 @@ public class Enemy extends Organism{
 	}
 	width = img.getWidth();
 	height = img.getHeight();
-	//health = 5;
 	dna = new DNA (5);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();
     }
     public void update(){
-	viewx[0] = x;
-	viewy[0] = y;
-	viewx[1] = (int)(x+200*(Math.cos(angle+Math.PI/6)));
-	viewy[1] = (int)(y+200*Math.sin(angle+Math.PI/6));
-	viewx[2] = (int)(x+200*(Math.cos(angle-Math.PI/6)));
-	viewy[2] = (int)(y+200*Math.sin(angle-Math.PI/6));
+	viewx[0] = x-mapx;
+	viewy[0] = y-mapy;
+	viewx[1] = (int)(x-mapx+200*(Math.cos(angle+Math.PI/6)));
+	viewy[1] = (int)(y-mapy+200*Math.sin(angle+Math.PI/6));
+	viewx[2] = (int)(x-mapx+200*(Math.cos(angle-Math.PI/6)));
+	viewy[2] = (int)(y-mapy+200*Math.sin(angle-Math.PI/6));
 	if(inview) angle = Math.atan2(targety-y,targetx-x);
 	x += speed*Math.cos(angle);
 	y += speed*Math.sin(angle);
-	if(x<width/2||x>GamePanel.WIDTH-width/2||
-	   y<height/2||y>GamePanel.HEIGHT-height/2)
+	if(x<width/2||x>Level.WIDTH-width/2||
+	   y<height/2||y>Level.HEIGHT-height/2)
 	    angle++;
     }
     public void draw(Graphics g){
