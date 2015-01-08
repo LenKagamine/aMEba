@@ -13,13 +13,13 @@ public class Player extends Organism{
 	angle = 0.0;
 	width = img.getWidth();
 	height = img.getHeight();
-	health = 10;
 	dna = new DNA(3);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();
     }
     public void update(){
-	angle = Math.atan2(y-my,x-mx)+Math.PI;
+	super.update();
+	angle = Math.atan2(y-mapy-my,x-mapx-mx)+Math.PI;
 	
 	x += speed*Math.cos(angle);
 	if(x<width/2) x = width/2;
@@ -31,15 +31,15 @@ public class Player extends Organism{
 	attacking = false;
     }
     public void mouse(int mx,int my){
-	this.mx = mx+map.getX();
-	this.my = my+map.getY();
+	this.mx = mx;
+	this.my = my;
     }
     public void click(int mx,int my){
 	attacking = true;
     }
-    public void release(int mx,int my){
+    /*public void release(int mx,int my){
 	attacking = false;
-    }
+    }*/
     public boolean isAttacking(){
 	return attacking;
     }

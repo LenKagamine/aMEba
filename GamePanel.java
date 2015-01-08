@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener, MouseMotionListener{
     //Width, Height
-    public static int WIDTH,HEIGHT;    
+    public static final int WIDTH = 1024,HEIGHT = 600;    
     //Thread
     private Thread thread;
     private boolean running;
@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     //Image/Drawing
     private BufferedImage image;
     private Graphics2D g;
-    //Game
+    //Games
     private Level level;
     
     public static void main(String[] args){
@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	//window.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 	//window.setUndecorated(true);
 	window.setResizable(false);
-	window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	//window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	window.pack();
 	window.setLocationRelativeTo(null);
 	window.setVisible(true);
@@ -33,9 +33,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 
     public GamePanel(){
 	super();
-	Toolkit tk = Toolkit.getDefaultToolkit();
-	WIDTH = tk.getScreenSize().width;
-	HEIGHT = tk.getScreenSize().height;
+	//Toolkit tk = Toolkit.getDefaultToolkit();
+	//WIDTH = tk.getScreenSize().width;
+	//HEIGHT = tk.getScreenSize().height;
 	setPreferredSize(new Dimension(WIDTH,HEIGHT)); //Set size
 	setFocusable(true); //Allow focus;
 	requestFocus(); //Set focus
@@ -105,9 +105,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}
     public void mousePressed(MouseEvent e){
-	level.click(e.getX(),e.getY());
+	try{
+	    level.click(e.getX(),e.getY());
+	} catch(Exception ex){}
     }
     public void mouseReleased(MouseEvent e){
-	level.release(e.getX(),e.getY());
+	try{
+	    level.release(e.getX(),e.getY());
+	} catch(Exception ex){}
     }
 }

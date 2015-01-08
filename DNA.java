@@ -19,73 +19,78 @@ public class DNA
 
     public DNA (int num)//biter = attack, aqua = ?, gooey = life, diatom = defense, buggy = speed, triangle = stamina
     { //for num: biter = 5, aqua = ?, gooey = 1, diatom = 6, buggy = 0, triangle = 3
-        speed = Math.random()*3+3;
-        health = (Math.random()*10+100);
-        hunger = (Math.random()*2+1);
-        stamina = (Math.random()*10+100);
-        staminaRecharge = (Math.random()*2+3);
-        attack = (Math.random()*2+12);
-        defense = (Math.random()*2+5);
-        size = 1;
-        stats[num] = stats[num] * 1.2;
-        //xspeed = Math.random()*3+speed;
-        //yspeed = Math.random()*3+speed;
+	stats[0] = (Math.random()*3)+3;
+	stats[1] = (Math.random()*10+100);
+	stats[2] = (Math.random()*2+1);
+	stats[3] = (Math.random()*10+100);
+	stats[4] = (Math.random()*2+3);
+	stats[5] = (Math.random()*2+12);
+	stats[6] = (Math.random()*2+5);
+	stats[7] = 1;
+	stats[num] = stats[num] * 1.2;
     }
 
-    public double getSpeed ()
+    public int getSpeed ()
     {
-        return speed;
+	return (int) stats[0];
     }
 
-    public double getHealth ()
+    public int getHealth ()
     {
-        return health;
+	return (int)stats[1];
     }
 
-    public double getHunger ()
+    public int getHunger ()
     {
-        return hunger;
+	return (int)stats[2];
     }
 
-    public double getStamina ()
+    public int getStamina ()
     {
-        return stamina;
+	return (int)stats[3];
     }
 
-    public double getStaminaRecharge ()
+    public int getStaminaRecharge ()
     {
-        return staminaRecharge;
+	return (int)stats[4];
     }
 
-    public double getAttack ()
+    public int getAttack ()
     {
-        return attack;
+	return (int)stats[5];
     }
 
-    public double getDefense ()
+    public int getDefense ()
     {
-        return defense;
+	return (int)stats[6];
     }
 
-    public double getSize ()
+    public int getSize ()
     {
-        return size;
+	return (int)stats[7];
+    }
+
+    public double getStat (int num)
+    {
+	return (double) stats[num];
     }
 
     public void setStat (int num, double amount)
     {
-        stats[num] += amount;
+	stats[num] += amount;
     }
-    
-    public void add (DNA dna)
+
+    public void add (DNA dna) //changed by J
     {
-        speed += dna.getSpeed()/10;
-        health += dna.getHealth()/10;
-        hunger += dna.getHunger()/10;
-        stamina += dna.getStamina()/10;
-        staminaRecharge += dna.getStaminaRecharge()/10;
-        attack += dna.getAttack()/10;
-        defense += dna.getDefense()/10;
-        size += dna.getSize()/10;
+	stats[0] += dna.getSpeed()/15.0;
+	if (stats[0] >= 12)
+	    stats[0] = 12;
+	stats[1] += dna.getHealth()/6.0; 
+	stats[2] += dna.getHunger()/6.0;
+	stats[3] += dna.getStamina()/10.0;
+	stats[4] += dna.getStaminaRecharge()/10.0;
+	stats[5] += dna.getAttack()/10.0;
+	stats[6] += dna.getDefense()/10.0;
+	stats[7] += dna.getSize()/10.0;
     }
 }

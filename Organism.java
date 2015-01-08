@@ -14,19 +14,28 @@ public abstract class Organism{
     protected double speed,angle;
     protected int health;
     protected DNA dna;
+    private long start;
     public Organism(Map map,double x,double y){
 	this.map = map;
 	this.x = x;
 	this.y = y;
 	speed = Math.random()*3+2;
 	angle = Math.random()*360;
+	
+	start = System.currentTimeMillis();
     }
-    public abstract void update();
+    public void update(){
+	long elapsed = System.currentTimeMillis();
+	if(elapsed-start>1000){
+	    start = System.currentTimeMillis();
+	    health -= dna.getHunger();
+	}
+    }
     public void draw(Graphics g){
-	//g.setColor(Color.black);
-	//g.drawRect((int)(x-width/2),(int)(y-height/2),width,height);
 	mapx = map.getX();
 	mapy = map.getY();
+	g.setColor(Color.black);
+	g.drawRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height);
 	AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
 	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
@@ -42,6 +51,13 @@ public abstract class Organism{
     }
     public DNA getDNA(){
 	return dna;
+    }
+    public void consume(DNA dna2){
+	dna.add(dna2);
+	this.health += dna2.getHealth()/2;
+	if(this.health >= dna.getHealth())
+	    this.health = dna.getHealth();
+	this.speed = this.dna.getSpeed();
     }
     public Point2D getPos(){
 	return new Point2D.Double(x,y);
