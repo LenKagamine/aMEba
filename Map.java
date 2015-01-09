@@ -4,37 +4,40 @@ import java.awt.image.BufferedImage;
 import java.awt.geom.Point2D;
 
 public class Map{
-    private int viewx,viewy;
-    private int speed;
+    private double viewx,viewy;
+    private double speed;
     private BufferedImage bg;
+    private int xmax,ymax;
     public Map(){
 	viewx = viewy = 0;
-	speed = 5;
+	speed = 0.1;
+	xmax = Level.WIDTH-GamePanel.WIDTH;
+	ymax = Level.HEIGHT-GamePanel.HEIGHT;
 	try{
-	    bg = ImageIO.read(getClass().getResourceAsStream("bg.png"));
+	    bg = ImageIO.read(getClass().getResourceAsStream("bg2.jpg"));
 	} catch(Exception e){
 	    e.printStackTrace();
 	}
     }
     public void draw(Graphics g){
-	g.drawImage(bg.getSubimage(viewx,viewy,GamePanel.WIDTH,GamePanel.HEIGHT),0,0,GamePanel.WIDTH,GamePanel.HEIGHT,null);
+	g.drawImage(bg.getSubimage((int)viewx,(int)viewy,GamePanel.WIDTH,GamePanel.HEIGHT),0,0,GamePanel.WIDTH,GamePanel.HEIGHT,null);
     }
-    public void setPos(Point2D player,Point2D map){
-	double x = player.getX()-map.getX(), y = player.getY()-map.getY();
-	if(x>GamePanel.WIDTH-100) viewx+=speed;
-	else if(x<100) viewx-=speed;
-	if(viewx>Level.WIDTH-GamePanel.WIDTH) viewx = Level.WIDTH-GamePanel.WIDTH;
-	else if(viewx<0) viewx = 0;
+    public void setPos(Point2D player){
+	double x = player.getX(), y = player.getY();
+	if(x<150) viewx += (x-150)*speed;
+	else if(x>GamePanel.WIDTH-150) viewx += (x-GamePanel.WIDTH+150)*speed;
+	if(y<150) viewy += (y-150)*speed;
+	if(y>GamePanel.HEIGHT-150) viewy += (y-GamePanel.HEIGHT+150)*speed;
 	
-	if(y>GamePanel.HEIGHT-100) viewy+=speed;
-	else if(y<100) viewy-=speed;
-	if(viewy>Level.HEIGHT-GamePanel.HEIGHT) viewy = Level.HEIGHT-GamePanel.HEIGHT;
-	else if(viewy<0) viewy = 0;
+	if(viewx<0) viewx = 0;
+	if(viewx>xmax) viewx = xmax;
+	if(viewy<0) viewy = 0;
+	if(viewy>ymax) viewy = ymax;
     }
-    public int getX(){
+    public double getX(){
 	return viewx;
     }
-    public int getY(){
+    public double getY(){
 	return viewy;
     }
 }

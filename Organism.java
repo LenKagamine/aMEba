@@ -11,6 +11,7 @@ public abstract class Organism{
     protected double mapx,mapy;
     protected Map map;
     protected int width,height;
+    protected int boxwidth,boxheight;
     protected double speed,angle;
     protected int health;
     protected DNA dna;
@@ -36,12 +37,17 @@ public abstract class Organism{
 	mapy = map.getY();
 	g.setColor(Color.black);
 	g.drawRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height);
+	g.setColor(Color.red);
+	g.drawRect((int)(x-mapx-boxwidth/2),(int)(y-mapy-boxheight/2),boxwidth,boxheight);
 	AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
 	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
     }
     public Rectangle2D getRect(){
 	return new Rectangle2D.Double(x-width/2,y-height/2,width,height);
+    }
+    public Rectangle2D getBoxRect(){
+	return new Rectangle2D.Double(x-boxwidth/2,y-boxheight/2,boxwidth,boxheight);
     }
     public void hit(int dmg){
 	health = Math.max(health-dmg,0);
@@ -55,14 +61,17 @@ public abstract class Organism{
     public void consume(DNA dna2){
 	dna.add(dna2);
 	this.health += dna2.getHealth()/2;
-	if(this.health >= dna.getHealth())
-	    this.health = dna.getHealth();
+	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
 	this.speed = this.dna.getSpeed();
+    }
+    public void consume(Berry berry){
+	health += berry.recoverHealth();
+	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
     }
     public Point2D getPos(){
 	return new Point2D.Double(x,y);
     }
-    public Point2D getMapPos(){
-	return new Point2D.Double(mapx,mapy);
+    public Point2D getScreenPos(){
+	return new Point2D.Double(x-mapx,y-mapy);
     }
 }

@@ -13,6 +13,8 @@ public class Player extends Organism{
 	angle = 0.0;
 	width = img.getWidth();
 	height = img.getHeight();
+	boxwidth = width/2;
+	boxheight = height/2;
 	dna = new DNA(3);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();
