@@ -27,7 +27,7 @@ public class Enemy extends Organism{
     }
     public void update(){
 	super.update();
-	long elapsed = System.currentTimeMillis();
+	elapsed = System.currentTimeMillis();
 	if(hitstart>=0 && elapsed-hitstart>1500){
 	    angle += Math.PI;
 	    hitstart = -1;
@@ -39,14 +39,10 @@ public class Enemy extends Organism{
 	viewx[2] = (int)(x-mapx+200*(Math.cos(angle-Math.PI/6)));
 	viewy[2] = (int)(y-mapy+200*Math.sin(angle-Math.PI/6));
 	if(inview) angle = Math.atan2(targety-y+mapy,targetx-x+mapx);
-	else{
-	    angle += (Math.random()-0.5)/8;
-	}
+	else angle += (Math.random()-0.5)/8;
 	x += speed*Math.cos(angle);
 	y += speed*Math.sin(angle);
-	if(x<width/2||x>Level.WIDTH-width/2||
-	   y<height/2||y>Level.HEIGHT-height/2)
-	    angle++;
+	if(x<width/2||x>Level.WIDTH-width/2||y<height/2||y>Level.HEIGHT-height/2) angle++;
     }
     public void draw(Graphics g){
 	int[] viewxi = new int[3],viewyi = new int[3];
@@ -62,20 +58,24 @@ public class Enemy extends Organism{
 	g.drawPolygon(viewxi,viewyi,3);
 	super.draw(g);
     }
-    public void insight(Point2D player){
-	targetx = player.getX();
-	targety = player.getY();
-	double alpha = ((viewy[1] - viewy[2])*(targetx - viewx[2]) + (viewx[2] - viewx[1])*(targety - viewy[2])) /
+    public boolean insight(Point2D point){
+	double alpha = ((viewy[1] - viewy[2])*(point.getX() - viewx[2]) + (viewx[2] - viewx[1])*(point.getY() - viewy[2])) /
 		((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2])),
-	beta = ((viewy[2] - viewy[0])*(targetx - viewx[2]) + (viewx[0] - viewx[2])*(targety - viewy[2])) /
+	beta = ((viewy[2] - viewy[0])*(point.getX() - viewx[2]) + (viewx[0] - viewx[2])*(point.getY() - viewy[2])) /
 	       ((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2]));
-	inview = (alpha>0)&&(beta>0)&&(alpha+beta<1);
+	return (alpha>0)&&(beta>0)&&(alpha+beta<1);
+    }
+    public void setTarget(Point2D point){
+	targetx = point.getX();
+	targety = point.getY();
+    }
+    public void setFollow(boolean follow){
+	inview = follow;
     }
     public void attack(Organism org){
 	if(inview && elapsed-atkstart>cooldown){
 	    atkstart = System.currentTimeMillis();
-	    if(getRect().contains(org.getPos())){
-		//rather wide attack box
+	    if(getBoxRect().intersects(org.getBoxRect())){
 		int damage = dna.getAttack() - org.getDNA().getDefense();
 		if(damage >= 0) org.hit(damage);
 	    }

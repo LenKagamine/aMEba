@@ -1,25 +1,13 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
-public abstract class Organism{
-    protected BufferedImage img;
-    protected double x,y;
-    protected double mapx,mapy;
-    protected Map map;
-    protected int width,height;
-    protected int boxwidth,boxheight;
+public abstract class Organism extends MapObject{
     protected double speed,angle;
     protected int health;
     protected DNA dna;
     private long start;
     public Organism(Map map,double x,double y){
-	this.map = map;
-	this.x = x;
-	this.y = y;
+	super(map,x,y);
 	speed = Math.random()*3+2;
 	angle = Math.random()*360;
 	
@@ -43,12 +31,6 @@ public abstract class Organism{
 	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
     }
-    public Rectangle2D getRect(){
-	return new Rectangle2D.Double(x-width/2,y-height/2,width,height);
-    }
-    public Rectangle2D getBoxRect(){
-	return new Rectangle2D.Double(x-boxwidth/2,y-boxheight/2,boxwidth,boxheight);
-    }
     public void hit(int dmg){
 	health = Math.max(health-dmg,0);
     }
@@ -67,11 +49,5 @@ public abstract class Organism{
     public void consume(Berry berry){
 	health += berry.recoverHealth();
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
-    }
-    public Point2D getPos(){
-	return new Point2D.Double(x,y);
-    }
-    public Point2D getScreenPos(){
-	return new Point2D.Double(x-mapx,y-mapy);
     }
 }

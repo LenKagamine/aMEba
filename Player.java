@@ -32,6 +32,15 @@ public class Player extends Organism{
 	
 	attacking = false;
     }
+    public void draw(Graphics g){
+	super.draw(g);
+	g.setColor(Color.black);
+	g.fillRoundRect((int)(GamePanel.WIDTH/4)-5,(int)(GamePanel.HEIGHT-100)-5,(int)(GamePanel.WIDTH/2)+10,50+10,20,20);
+	g.setColor(Color.red);
+	g.fillRoundRect((int)(GamePanel.WIDTH/4),(int)(GamePanel.HEIGHT-100),(int)(1.0*health/dna.getHealth()*GamePanel.WIDTH/2),50,20,20);
+	g.setColor(Color.yellow);
+	g.drawString(""+health+"/"+dna.getHealth(),(int)(GamePanel.WIDTH/2),(int)(GamePanel.HEIGHT-100)+25);
+    }
     public void mouse(int mx,int my){
 	this.mx = mx;
 	this.my = my;

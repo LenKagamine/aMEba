@@ -26,25 +26,33 @@ public class Level{
 	}
 	for(int i=0;i<e.size();i++){
 	    ((Enemy)e.get(i)).update();
-	    ((Enemy)e.get(i)).insight(p.getScreenPos());
-	    ((Enemy)e.get(i)).attack(p);
+	    ((Enemy)e.get(i)).setFollow(false);
+	    if(((Enemy)e.get(i)).insight(p.getScreenPos())){
+		((Enemy)e.get(i)).setTarget(p.getScreenPos());
+		((Enemy)e.get(i)).setFollow(true);
+		((Enemy)e.get(i)).attack(p);
+	    }
 	    for(int j=0;j<berries.size();j++){
-		if(((Berry)(berries.get(j))).getRect().intersects(((Enemy)(e.get(i))).getBoxRect())){
-		    ((Enemy)(e.get(i))).consume((Berry)(berries.get(j)));
+		if(((Enemy)e.get(i)).insight(((Berry)berries.get(j)).getScreenPos())){
+		    ((Enemy)e.get(i)).setTarget(((Berry)berries.get(j)).getScreenPos());
+		    ((Enemy)e.get(i)).setFollow(true);
+		}
+		if(((Berry)berries.get(j)).getRect().intersects(((Enemy)e.get(i)).getBoxRect())){
+		    ((Enemy)e.get(i)).consume((Berry)berries.get(j));
 		    berries.remove(j);
 		}
 	    }
 	    if(p.isAttacking()){
-		if(p.getRect().intersects(((Enemy)(e.get(i))).getRect())) ((Enemy)(e.get(i))).hit((int)(p.getDNA().getAttack()));
-		if(((Enemy)(e.get(i))).isDead()){
+		if(p.getBoxRect().intersects(((Enemy)e.get(i)).getBoxRect())) ((Enemy)e.get(i)).hit((int)(p.getDNA().getAttack()));
+		if(((Enemy)e.get(i)).isDead()){
 		    p.consume(((Enemy)e.get(i)).getDNA());
 		    e.remove(i);
 		}
 	    }
 	}
-	for (int j=0;j<berries.size();j++){
-	    if(((Berry)(berries.get(j))).getRect().intersects(p.getBoxRect())){
-		p.consume((Berry)(berries.get(j)));
+	for(int j=0;j<berries.size();j++){
+	    if(((Berry)berries.get(j)).getRect().intersects(p.getBoxRect())){
+		p.consume((Berry)berries.get(j));
 		berries.remove(j);
 	    }
 	}
@@ -52,8 +60,8 @@ public class Level{
     }
     public void draw(Graphics g){
 	map.draw(g);
-	for(int i=0;i<e.size();i++) ((Enemy)(e.get(i))).draw(g);
-	for(int i=0;i<berries.size();i++) ((Berry)(berries.get(i))).draw(g);
+	for(int i=0;i<e.size();i++) ((Enemy)e.get(i)).draw(g);
+	for(int i=0;i<berries.size();i++) ((Berry)berries.get(i)).draw(g);
 	p.draw(g);
     }
     public void mouse(int mx,int my){
