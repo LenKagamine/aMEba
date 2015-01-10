@@ -1,5 +1,4 @@
 import java.awt.*;
-import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
 public class Enemy extends Organism{
     private double[] viewx = new double[3],viewy = new double[3];
@@ -8,17 +7,8 @@ public class Enemy extends Organism{
     private int cooldown = 200;
     private long atkstart,hitstart,elapsed;
     private double targetx,targety;
-    public Enemy(Map map,double x,double y){
-	super(map,x,y);
-	try{
-	    img = ImageIO.read(getClass().getResourceAsStream("biter.png"));
-	} catch(Exception e){
-	    e.printStackTrace();
-	}
-	width = img.getWidth();
-	height = img.getHeight();
-	boxwidth = width/2;
-	boxheight = height/2;
+    public Enemy(Map map,double x,double y,int species){
+	super(map,x,y,species);
 	dna = new DNA (5);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();

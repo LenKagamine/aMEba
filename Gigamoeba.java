@@ -6,28 +6,28 @@ public class Gigamoeba extends Organism
 {
     private boolean inview = false;
     private double targetx,targety;
-    public Gigamoeba (double x, double y)
+    public Gigamoeba (Map m, double x, double y)
     {
-        super(x,y);
-        try{
-            img = ImageIO.read(getClass().getResourceAsStream("Smaller pics/gigamoeba.png"));
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        angle = 0.0;
-        width = img.getWidth();
-        height = img.getHeight();
+	super(m, x,y, 5);
+	try{
+	    img = ImageIO.read(getClass().getResourceAsStream("Smaller pics/gigamoeba.png"));
+	} catch(Exception e){
+	    e.printStackTrace();
+	}
+	angle = 0.0;
+	width = img.getWidth();
+	height = img.getHeight();
     }
 
     public void update()
     {
-        //angle = Math.atan2(yspeed,xspeed);
+	//angle = Math.atan2(yspeed,xspeed);
 
     }
 
     public void draw(Graphics g)
     {
-        super.draw(g);
-        
+	super.draw(g);
+	
     }
 }

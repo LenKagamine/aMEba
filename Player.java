@@ -3,18 +3,9 @@ import javax.imageio.ImageIO;
 public class Player extends Organism{
     private double mx,my;
     private boolean attacking;
-    public Player(Map map,double x,double y){
-	super(map,x,y);
-	try{
-	    img = ImageIO.read(getClass().getResourceAsStream("triangle.png"));
-	} catch(Exception e){
-	    e.printStackTrace();
-	}
+    public Player(Map map,double x,double y,int species){
+	super(map,x,y,species);
 	angle = 0.0;
-	width = img.getWidth();
-	height = img.getHeight();
-	boxwidth = width/2;
-	boxheight = height/2;
 	dna = new DNA(3);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();

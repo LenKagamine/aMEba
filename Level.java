@@ -9,13 +9,11 @@ public class Level{
     public static final int WIDTH = 1600, HEIGHT = 1000;
     public Level(){
 	map = new Map();
-	p = new Player(map,320,240);
+	p = new Player(map,320,240,8);
 	e = new ArrayList();
 	berries = new ArrayList();
 	berrystart = System.currentTimeMillis();
-	for(int i=0;i<5;i++){
-	    e.add(new Enemy(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
-	}
+	for(int i=0;i<15;i++) spawnEnemy();
     }
     public void update(){
 	map.setPos(p.getScreenPos());
@@ -26,17 +24,17 @@ public class Level{
 	}
 	for(int i=0;i<e.size();i++){
 	    ((Enemy)e.get(i)).update();
-	    ((Enemy)e.get(i)).setFollow(false);
 	    if(((Enemy)e.get(i)).insight(p.getScreenPos())){
 		((Enemy)e.get(i)).setTarget(p.getScreenPos());
 		((Enemy)e.get(i)).setFollow(true);
 		((Enemy)e.get(i)).attack(p);
 	    }
+	    else ((Enemy)e.get(i)).setFollow(false);
 	    for(int j=0;j<berries.size();j++){
-		if(((Enemy)e.get(i)).insight(((Berry)berries.get(j)).getScreenPos())){
+		/*if(((Enemy)e.get(i)).insight(((Berry)berries.get(j)).getScreenPos())){
 		    ((Enemy)e.get(i)).setTarget(((Berry)berries.get(j)).getScreenPos());
 		    ((Enemy)e.get(i)).setFollow(true);
-		}
+		}*/
 		if(((Berry)berries.get(j)).getRect().intersects(((Enemy)e.get(i)).getBoxRect())){
 		    ((Enemy)e.get(i)).consume((Berry)berries.get(j));
 		    berries.remove(j);
@@ -47,6 +45,7 @@ public class Level{
 		if(((Enemy)e.get(i)).isDead()){
 		    p.consume(((Enemy)e.get(i)).getDNA());
 		    e.remove(i);
+		    spawnEnemy();
 		}
 	    }
 	}
@@ -63,6 +62,9 @@ public class Level{
 	for(int i=0;i<e.size();i++) ((Enemy)e.get(i)).draw(g);
 	for(int i=0;i<berries.size();i++) ((Berry)berries.get(i)).draw(g);
 	p.draw(g);
+    }
+    public void spawnEnemy(){
+	e.add(new Enemy(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100,(int)(Math.random()*5)));
     }
     public void mouse(int mx,int my){
 	p.mouse(mx,my);
