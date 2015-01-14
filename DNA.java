@@ -16,7 +16,7 @@ public class DNA{
     }*/
 
     public DNA (int num)//biter = attack, aqua = ?, gooey = life, diatom = defense, buggy = speed, triangle = stamina
-    { //for num: biter = 5, aqua = 3, gooey = 1, diatom = 6, buggy = 0, triangle = 3
+    { //for num: buggy = 0, gooey = 1, aqua = 2, biter = 3, diatom = 4, triangle = 8
 	stats[0] = (Math.random()*3)+3;
 	stats[1] = (Math.random()*10+100);
 	stats[2] = (Math.random()*10+100);

@@ -23,31 +23,53 @@ public class Level{
 	    berrystart = System.currentTimeMillis();
 	}
 	for(int i=0;i<e.size();i++){
-	    ((Enemy)e.get(i)).update();
-	    if(((Enemy)e.get(i)).insight(p.getScreenPos())){
-		((Enemy)e.get(i)).setTarget(p.getScreenPos());
-		((Enemy)e.get(i)).setFollow(true);
-		((Enemy)e.get(i)).attack(p);
+	    Enemy en = (Enemy)e.get(i);
+	    en.update();
+	    if(en.isDead()){
+		e.remove(i);
+		spawnEnemy();
 	    }
-	    else ((Enemy)e.get(i)).setFollow(false);
-	    for(int j=0;j<berries.size();j++){
-		/*if(((Enemy)e.get(i)).insight(((Berry)berries.get(j)).getScreenPos())){
-		    ((Enemy)e.get(i)).setTarget(((Berry)berries.get(j)).getScreenPos());
-		    ((Enemy)e.get(i)).setFollow(true);
+	    if(en.insight(p.getScreenPos())){
+		en.setTarget(p.getScreenPos());
+		en.setFollow(true);
+		en.attack(p);
+	    }
+	    else{
+		en.setFollow(false);
+		for(int j=0;j<e.size();j++){ //enemies attack each other
+		    if(en.getSpecies() != ((Enemy)e.get(j)).getSpecies()){
+			if(en.insight(((Enemy)e.get(j)).getScreenPos())){
+			    en.setTarget(((Enemy)e.get(j)).getScreenPos());
+			    en.setFollow(true);
+			    en.attack(((Enemy)e.get(j)));
+			    if(((Enemy)e.get(j)).isDead()){
+				en.consume((((Enemy)e.get(j)).getDNA()));
+				e.remove(j);
+				spawnEnemy();
+			    }
+			}
+		    }
+		}
+	    }
+	    for(int j=0;j<berries.size();j++){ //enemies eat berry
+		/*if(en.insight(((Berry)berries.get(j)).getScreenPos())){
+		    en.setTarget(((Berry)berries.get(j)).getScreenPos());
+		    en.setFollow(true);
 		}*/
-		if(((Berry)berries.get(j)).getRect().intersects(((Enemy)e.get(i)).getBoxRect())){
-		    ((Enemy)e.get(i)).consume((Berry)berries.get(j));
+		if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){
+		    en.consume((Berry)berries.get(j));
 		    berries.remove(j);
 		}
 	    }
-	    if(p.isAttacking()){
-		if(p.getBoxRect().intersects(((Enemy)e.get(i)).getBoxRect())) ((Enemy)e.get(i)).hit((int)(p.getDNA().getAttack()));
-		if(((Enemy)e.get(i)).isDead()){
-		    p.consume(((Enemy)e.get(i)).getDNA());
+	    if(p.isAttacking()){ //player attacks enemy
+		if(p.getBoxRect().intersects(en.getBoxRect())) en.hit((int)(p.getDNA().getAttack()));
+		if(en.isDead()){
+		    p.consume(en.getDNA());
 		    e.remove(i);
 		    spawnEnemy();
 		}
 	    }
+	    
 	}
 	for(int j=0;j<berries.size();j++){
 	    if(((Berry)berries.get(j)).getRect().intersects(p.getBoxRect())){

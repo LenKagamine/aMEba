@@ -24,10 +24,10 @@ public class Enemy extends Organism{
 	}
 	viewx[0] = x-mapx;
 	viewy[0] = y-mapy;
-	viewx[1] = (int)(x-mapx+200*(Math.cos(angle+Math.PI/6)));
-	viewy[1] = (int)(y-mapy+200*Math.sin(angle+Math.PI/6));
-	viewx[2] = (int)(x-mapx+200*(Math.cos(angle-Math.PI/6)));
-	viewy[2] = (int)(y-mapy+200*Math.sin(angle-Math.PI/6));
+	viewx[1] = (int)(x-mapx+250*(Math.cos(angle+Math.PI/6)));
+	viewy[1] = (int)(y-mapy+250*Math.sin(angle+Math.PI/6));
+	viewx[2] = (int)(x-mapx+250*(Math.cos(angle-Math.PI/6)));
+	viewy[2] = (int)(y-mapy+250*Math.sin(angle-Math.PI/6));
 	if(inview) angle = Math.atan2(targety-y+mapy,targetx-x+mapx);
 	else angle += (Math.random()-0.5)/8;
 	x += speed*Math.cos(angle);
@@ -35,7 +35,7 @@ public class Enemy extends Organism{
 	if(x<width/2||x>Level.WIDTH-width/2||y<height/2||y>Level.HEIGHT-height/2) angle++;
     }
     public void draw(Graphics g){
-	int[] viewxi = new int[3],viewyi = new int[3];
+	/*int[] viewxi = new int[3],viewyi = new int[3];
 	for(int i=0;i<3;i++){
 	    viewxi[i] = (int)viewx[i];
 	    viewyi[i] = (int)viewy[i];
@@ -45,8 +45,12 @@ public class Enemy extends Organism{
 	    g.fillPolygon(viewxi,viewyi,3);
 	}
 	g.setColor(Color.black);
-	g.drawPolygon(viewxi,viewyi,3);
+	g.drawPolygon(viewxi,viewyi,3);*/
 	super.draw(g);
+	g.setColor(Color.black);
+	g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),width,5);
+	g.setColor(Color.red);
+	g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),(int)(1.0*health/dna.getHealth()*width),5);
     }
     public boolean insight(Point2D point){
 	double alpha = ((viewy[1] - viewy[2])*(point.getX() - viewx[2]) + (viewx[2] - viewx[1])*(point.getY() - viewy[2])) /
