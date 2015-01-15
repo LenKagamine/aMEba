@@ -39,9 +39,6 @@ public class Player extends Organism{
     public void click(int mx,int my){
 	attacking = true;
     }
-    /*public void release(int mx,int my){
-	attacking = false;
-    }*/
     public boolean isAttacking(){
 	return attacking;
     }

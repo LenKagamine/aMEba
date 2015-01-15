@@ -94,7 +94,4 @@ public class Level{
     public void click(int mx,int my){
 	p.click(mx,my);
     }
-    public void release(int mx,int my){
-	//p.release(mx,my);
-    }
 }

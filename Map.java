@@ -14,7 +14,7 @@ public class Map{
 	xmax = Level.WIDTH-GamePanel.WIDTH;
 	ymax = Level.HEIGHT-GamePanel.HEIGHT;
 	try{
-	    bg = ImageIO.read(getClass().getResourceAsStream("bg2.jpg"));
+	    bg = ImageIO.read(getClass().getResourceAsStream("gamebg.jpg"));
 	} catch(Exception e){
 	    e.printStackTrace();
 	}
@@ -27,8 +27,7 @@ public class Map{
 	if(x<150) viewx += (x-150)*speed;
 	else if(x>GamePanel.WIDTH-150) viewx += (x-GamePanel.WIDTH+150)*speed;
 	if(y<150) viewy += (y-150)*speed;
-	if(y>GamePanel.HEIGHT-150) viewy += (y-GamePanel.HEIGHT+150)*speed;
-	
+	if(y>GamePanel.HEIGHT-150) viewy += (y-GamePanel.HEIGHT+150)*speed;      
 	if(viewx<0) viewx = 0;
 	if(viewx>xmax) viewx = xmax;
 	if(viewy<0) viewy = 0;
