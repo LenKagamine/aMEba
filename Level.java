@@ -6,9 +6,11 @@ public class Level{
     private ArrayList e;
     private ArrayList berries;
     private long berrystart;
-    public static final int WIDTH = 1600, HEIGHT = 1000;
+    public static int WIDTH, HEIGHT;
     public Level(){
-	map = new Map();
+	map = new Map("gamebg.jpg");
+	WIDTH = map.getWidth();
+	HEIGHT = map.getHeight();
 	p = new Player(map,320,240,8);
 	e = new ArrayList();
 	berries = new ArrayList();
