@@ -71,7 +71,8 @@ public abstract class Organism extends MapObject{
     }
     public void consume(DNA dna2){
     	if (species == 8)
-        dna.playerDebuff(dna2);
+        dna.playerAdd(dna2);
+        else
 	dna.add(dna2);
 	this.health += dna2.getHealth()/2;
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
