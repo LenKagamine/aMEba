@@ -99,18 +99,18 @@ public class DNA{
         stats[7] += dna.getStat(7)/10.0;
     }
     
-    public void playerDebuff (DNA dna)
+    public void playerAdd (DNA dna)
     {
-        stats[0] -= dna.getStat(0)/25.0;
+        stats[0] += dna.getStat(0)/25.0;
         if (stats[0] >= 12)
             stats[0] = 12;
-        stats[1] -= dna.getStat(1)/10.0; 
-        stats[2] -= dna.getStat(2)/10.0;
-        stats[3] -= dna.getStat(3)/15.0;
-        stats[4] -= dna.getStat(4)/15.0;
-        stats[5] -= dna.getStat(5)/15.0;
-        stats[6] -= dna.getStat(6)/15.0;
-        stats[7] -= dna.getStat(7)/15.0;
+        stats[1] += dna.getStat(1)/10.0; 
+        stats[2] += dna.getStat(2)/10.0;
+        stats[3] += dna.getStat(3)/15.0;
+        stats[4] += dna.getStat(4)/15.0;
+        stats[5] += dna.getStat(5)/15.0;
+        stats[6] += dna.getStat(6)/15.0;
+        stats[7] += dna.getStat(7)/15.0;
     }
 }
 
