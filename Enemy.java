@@ -1,82 +1,87 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
 public class Enemy extends Organism{
-    private double[] viewx = new double[3],viewy = new double[3];
-    private boolean inview = false;
-    private int species = 5;
-    private int cooldown = 200;
-    private long atkstart,hitstart,elapsed;
-    private double targetx,targety;
-    public Enemy(Map map,double x,double y,int species){
-	super(map,x,y,species);
-	dna = new DNA (5);
-	health = (int)dna.getHealth();
-	speed = (int)dna.getSpeed();
-	atkstart = System.currentTimeMillis();
-	hitstart = -1;
+  private double[] viewx = new double[3],viewy = new double[3];
+  private boolean inview = false;
+  private int species = 5;
+  private int cooldown = 200;
+  private long atkstart,hitstart,elapsed;
+  private double targetx,targety;
+  public Enemy(Map map,double x,double y,int species){
+    super(map,x,y,species);
+    dna = new DNA (5);
+    health = (int)dna.getHealth();
+    speed = (int)dna.getSpeed();
+    atkstart = System.currentTimeMillis();
+    hitstart = -1;
+  }
+  public void update(){
+    super.update();
+    elapsed = System.currentTimeMillis();
+    if(hitstart>=0 && elapsed-hitstart>1500){
+      angle += Math.PI;
+      hitstart = -1;
     }
-    public void update(){
-	super.update();
-	elapsed = System.currentTimeMillis();
-	if(hitstart>=0 && elapsed-hitstart>1500){
-	    angle += Math.PI;
-	    hitstart = -1;
-	}
-	viewx[0] = x-mapx;
-	viewy[0] = y-mapy;
-	viewx[1] = (int)(x-mapx+250*(Math.cos(angle+Math.PI/6)));
-	viewy[1] = (int)(y-mapy+250*Math.sin(angle+Math.PI/6));
-	viewx[2] = (int)(x-mapx+250*(Math.cos(angle-Math.PI/6)));
-	viewy[2] = (int)(y-mapy+250*Math.sin(angle-Math.PI/6));
-	if(inview) angle = Math.atan2(targety-y+mapy,targetx-x+mapx);
-	else angle += (Math.random()-0.5)/8;
-	x += speed*Math.cos(angle);
-	y += speed*Math.sin(angle);
-	if(x<width/2||x>Level.WIDTH-width/2||y<height/2||y>Level.HEIGHT-height/2) angle++;
+    viewx[0] = x-mapx;
+    viewy[0] = y-mapy;
+    viewx[1] = (int)(x-mapx+250*(Math.cos(angle+Math.PI/6)));
+    viewy[1] = (int)(y-mapy+250*Math.sin(angle+Math.PI/6));
+    viewx[2] = (int)(x-mapx+250*(Math.cos(angle-Math.PI/6)));
+    viewy[2] = (int)(y-mapy+250*Math.sin(angle-Math.PI/6));
+    if(inview) angle = Math.atan2(targety-y+mapy,targetx-x+mapx);
+    else angle += (Math.random()-0.5)/8;
+    x += speed*Math.cos(angle);
+    y += speed*Math.sin(angle);
+    if(x<width/2||x>Level.WIDTH-width/2||y<height/2||y>Level.HEIGHT-height/2) angle++;
+  }
+  public void draw(Graphics g){
+    /*int[] viewxi = new int[3],viewyi = new int[3];
+     for(int i=0;i<3;i++){
+     viewxi[i] = (int)viewx[i];
+     viewyi[i] = (int)viewy[i];
+     }
+     if(inview){
+     g.setColor(Color.green);
+     g.fillPolygon(viewxi,viewyi,3);
+     }
+     g.setColor(Color.black);
+     g.drawPolygon(viewxi,viewyi,3);*/
+    super.draw(g);
+    g.setColor(Color.black);
+    g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),width,5);
+    g.setColor(Color.red);
+    g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),(int)(1.0*health/dna.getHealth()*width),5);
+  }
+  public boolean insight(Point2D point){
+    double alpha = ((viewy[1] - viewy[2])*(point.getX() - viewx[2]) + (viewx[2] - viewx[1])*(point.getY() - viewy[2])) /
+      ((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2])),
+      beta = ((viewy[2] - viewy[0])*(point.getX() - viewx[2]) + (viewx[0] - viewx[2])*(point.getY() - viewy[2])) /
+      ((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2]));
+    return (alpha>0)&&(beta>0)&&(alpha+beta<1);
+  }
+  public void setTarget(Point2D point){
+    targetx = point.getX();
+    targety = point.getY();
+  }
+  public void setFollow(boolean follow){
+    inview = follow;
+  }
+  public void attack(Organism org){
+    if(inview && elapsed-atkstart>cooldown){
+      atkstart = System.currentTimeMillis();
+      if(getBoxRect().intersects(org.getBoxRect())){
+        int damage = dna.getAttack() - org.getDNA().getDefense();
+        if(damage >= 0) org.hit(damage);
+      }
     }
-    public void draw(Graphics g){
-	/*int[] viewxi = new int[3],viewyi = new int[3];
-	for(int i=0;i<3;i++){
-	    viewxi[i] = (int)viewx[i];
-	    viewyi[i] = (int)viewy[i];
-	}
-	if(inview){
-	    g.setColor(Color.green);
-	    g.fillPolygon(viewxi,viewyi,3);
-	}
-	g.setColor(Color.black);
-	g.drawPolygon(viewxi,viewyi,3);*/
-	super.draw(g);
-	g.setColor(Color.black);
-	g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),width,5);
-	g.setColor(Color.red);
-	g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),(int)(1.0*health/dna.getHealth()*width),5);
+  }
+  public void mate (Organism org){
+    if(org.getSpecies() == species && getBoxRect().intersects(org.getBoxRect())){
+      System.out.println("Mate");
     }
-    public boolean insight(Point2D point){
-	double alpha = ((viewy[1] - viewy[2])*(point.getX() - viewx[2]) + (viewx[2] - viewx[1])*(point.getY() - viewy[2])) /
-		((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2])),
-	beta = ((viewy[2] - viewy[0])*(point.getX() - viewx[2]) + (viewx[0] - viewx[2])*(point.getY() - viewy[2])) /
-	       ((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2]));
-	return (alpha>0)&&(beta>0)&&(alpha+beta<1);
-    }
-    public void setTarget(Point2D point){
-	targetx = point.getX();
-	targety = point.getY();
-    }
-    public void setFollow(boolean follow){
-	inview = follow;
-    }
-    public void attack(Organism org){
-	if(inview && elapsed-atkstart>cooldown){
-	    atkstart = System.currentTimeMillis();
-	    if(getBoxRect().intersects(org.getBoxRect())){
-		int damage = dna.getAttack() - org.getDNA().getDefense();
-		if(damage >= 0) org.hit(damage);
-	    }
-	}
-    }
-    public void hit(int dmg){
-	super.hit(dmg);
-	if(hitstart<0) hitstart = System.currentTimeMillis();
-    }
+  }
+  public void hit(int dmg){
+    super.hit(dmg);
+    if(hitstart<0) hitstart = System.currentTimeMillis();
+  }
 }
