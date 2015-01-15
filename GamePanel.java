@@ -5,7 +5,8 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener, MouseMotionListener{
     //Width, Height
-    public static final int WIDTH = 1024,HEIGHT = 600;    
+    //public static final int WIDTH = 1024,HEIGHT = 600;
+    public static int WIDTH, HEIGHT;
     //Thread
     private Thread thread;
     private boolean running;
@@ -15,7 +16,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     private BufferedImage image;
     private Graphics2D g;
     //Games
-    private Level level;
+    private static Menu menu;
+    private static Level level;
+    private static boolean ingame = false;
     
     public static void main(String[] args){
 	JFrame window = new JFrame("Summative");
@@ -33,9 +36,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 
     public GamePanel(){
 	super();
-	//Toolkit tk = Toolkit.getDefaultToolkit();
-	//WIDTH = tk.getScreenSize().width;
-	//HEIGHT = tk.getScreenSize().height;
+	Toolkit tk = Toolkit.getDefaultToolkit();
+	WIDTH = tk.getScreenSize().width;
+	HEIGHT = tk.getScreenSize().height;
 	setPreferredSize(new Dimension(WIDTH,HEIGHT)); //Set size
 	setFocusable(true); //Allow focus;
 	requestFocus(); //Set focus
@@ -54,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void run(){ //Main game loop
 	image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	g = (Graphics2D) image.getGraphics();
-	level = new Level();
+	menu = new Menu();
 	running = true;
 	
 	long start,elapsed,wait; //Time keeping for FPS
@@ -79,26 +82,35 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     }
     
     public void update(){//Update game
-	level.update();
+	if(ingame) level.update();
+	else menu.update();
     }
     public void draw(){//Draw game
 	g.setColor(Color.white);
 	g.fillRect(0,0,WIDTH,HEIGHT);
-	level.draw(g);
+	if(ingame) level.draw(g);
+	else menu.draw(g);
     }
     public void drawToScreen(){ //Draw buffered image to level
 	Graphics g2 = getGraphics();
 	g2.drawImage(image,0,0,WIDTH,HEIGHT,null);
 	g2.dispose();
     }
+    public static void startGame(){
+	level = new Level();
+	ingame = true;
+	menu = null;
+    }
     public void mouseDragged(MouseEvent e){
 	try{
-	    level.mouse(e.getX(),e.getY());
+	    if(ingame) level.mouse(e.getX(),e.getY());
+	    else menu.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseMoved(MouseEvent e){
 	try{
-	    level.mouse(e.getX(),e.getY());
+	    if(ingame) level.mouse(e.getX(),e.getY());
+	    else menu.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseClicked(MouseEvent e){}
@@ -106,12 +118,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void mouseExited(MouseEvent e){}
     public void mousePressed(MouseEvent e){
 	try{
-	    level.click(e.getX(),e.getY());
+	    if(ingame) level.click(e.getX(),e.getY());
+	    else menu.click(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
-    public void mouseReleased(MouseEvent e){
-	try{
-	    level.release(e.getX(),e.getY());
-	} catch(Exception ex){}
-    }
+    public void mouseReleased(MouseEvent e){}
 }

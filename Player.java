@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 public class Player extends Organism{
     private double mx,my;
+    private double prevx, prevy;
     private boolean attacking;
     public Player(Map map,double x,double y,int species){
 	super(map,x,y,species);
@@ -9,10 +10,14 @@ public class Player extends Organism{
 	dna = new DNA(3);
 	health = (int)dna.getHealth();
 	speed = (int)dna.getSpeed();
+	prevx = 100;
+	prevy = 100;
     }
     public void update(){
 	super.update();
 	angle = Math.atan2(y-mapy-my,x-mapx-mx)+Math.PI;
+	prevx = x;
+	prevy = y;
 	
 	x += speed*Math.cos(angle);
 	if(x<width/2) x = width/2;
@@ -39,10 +44,12 @@ public class Player extends Organism{
     public void click(int mx,int my){
 	attacking = true;
     }
-    /*public void release(int mx,int my){
-	attacking = false;
-    }*/
     public boolean isAttacking(){
 	return attacking;
+    }
+    public void collide ()
+    {
+        x = prevx;
+        y = prevy;
     }
 }
