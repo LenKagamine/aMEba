@@ -53,6 +53,9 @@ public abstract class Organism extends MapObject{
 	AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
 	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
+	g.setColor(Color.white);
+	g.setFont(new Font("Tahoma", Font.BOLD, 20));
+	g.drawString((int)(dna.getStat(7))+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
     }
     public void hit(int dmg){
 	health = Math.max(health-dmg,0);
@@ -67,7 +70,8 @@ public abstract class Organism extends MapObject{
 	return dna;
     }
     public void consume(DNA dna2){
-	dna.add(dna2);
+	if(species == 8) dna.playerAdd(dna2);
+	else dna.add(dna2);
 	this.health += dna2.getHealth()/2;
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
 	this.speed = this.dna.getSpeed();

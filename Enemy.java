@@ -7,6 +7,7 @@ public class Enemy extends Organism{
     private int cooldown = 200;
     private long atkstart,hitstart,elapsed;
     private double targetx,targety;
+    private double prevx, prevy;
     public Enemy(Map map,double x,double y,int species){
 	super(map,x,y,species);
 	dna = new DNA (5);
@@ -14,9 +15,13 @@ public class Enemy extends Organism{
 	speed = (int)dna.getSpeed();
 	atkstart = System.currentTimeMillis();
 	hitstart = -1;
+	prevx = 100;
+	prevy = 100;
     }
     public void update(){
 	super.update();
+	prevx = x;
+	prevy = y;
 	elapsed = System.currentTimeMillis();
 	if(hitstart>=0 && elapsed-hitstart>1500){
 	    angle += Math.PI;
@@ -78,5 +83,10 @@ public class Enemy extends Organism{
     public void hit(int dmg){
 	super.hit(dmg);
 	if(hitstart<0) hitstart = System.currentTimeMillis();
+    }
+    public void collide(){
+	x=prevx;
+	y=prevy;
+	angle++;
     }
 }
