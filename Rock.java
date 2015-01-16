@@ -1,20 +1,23 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.Rectangle2D;
+import javax.imageio.ImageIO;
 public class Rock extends MapObject{
     public Rock(Map map,double x,double y){
 	super(map,x,y);
-	boxwidth = width = 64;
-	boxheight = height = 64;
+	try{
+	    img = ImageIO.read(getClass().getResourceAsStream("rock.png"));
+	    boxwidth = width = img.getWidth();
+	    boxheight = height = img.getHeight();
+	} catch(Exception e){
+	    e.printStackTrace();
+	}
     }
-
     public void draw(Graphics g){
 	mapx = map.getX();
 	mapy = map.getY();
-	g.setColor(Color.lightGray);
-	g.fillRoundRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height,15,15);
+	g.drawImage(img,(int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height,null);
     }
-
     public boolean checkStuck(double x, double y){
 	return (x >= this.x-80 && x <= this.x+80 && y >= this.y-80 && y <= this.y+80);
     }

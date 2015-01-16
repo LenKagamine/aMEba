@@ -81,7 +81,7 @@ public class Enemy extends Organism{
 	}
     }
     public void mate(Organism org){
-	if(org.getSpecies() == species && getBoxRect.intersects(org.getBoxRect()))
+	if(org.getSpecies() == species && getBoxRect().intersects(org.getBoxRect()))
 	    System.out.println("Mate");
     }
     public void hit(int dmg){
