@@ -126,6 +126,7 @@ public class Level{
 	    ((Enemy)(e.get(e.size()-1))).getDNA().boost();
 	    if (Math.random()*6 <= 1)
 		((Enemy)(e.get(e.size()-1))).getDNA().boost();
+	    ((Enemy)(e.get(e.size()-1))).setHealth();
 	}
     }
     public void mouse(int mx,int my){
