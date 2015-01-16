@@ -69,6 +69,10 @@ public abstract class Organism extends MapObject{
     public DNA getDNA(){
 	return dna;
     }
+    public void setHealth()
+    {
+        health = (int)(dna.getHealth());
+    }
     public void consume(DNA dna2){
 	if(species == 8) dna.playerAdd(dna2);
 	else dna.add(dna2);
