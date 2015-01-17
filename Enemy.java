@@ -147,7 +147,7 @@ public class Enemy extends Organism{
 	prevx = x;
 	prevy = y;
 	elapsed = System.currentTimeMillis();
-	if(hitstart>=0 && elapsed-hitstart>1000){
+	if(hitstart>=0 && elapsed-hitstart>1500){
 	    angle += Math.PI;
 	    hitstart = -1;
 	}
