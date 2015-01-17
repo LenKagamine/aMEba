@@ -4,7 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 public abstract class Organism extends MapObject{
     protected double speed,angle;
-    protected int health;
+    protected double health;
     protected DNA dna;
     protected int species;
     private long start;
@@ -55,9 +55,9 @@ public abstract class Organism extends MapObject{
 	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
 	g.setColor(Color.white);
 	g.setFont(new Font("Tahoma", Font.BOLD, 20));
-	g.drawString((int)(dna.getStat(7))+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
+	g.drawString((int)(dna.getSize())+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
     }
-    public void hit(int dmg){
+    public void hit(double dmg){
 	health = Math.max(health-dmg,0);
     }
     public int getSpecies(){
@@ -71,7 +71,7 @@ public abstract class Organism extends MapObject{
     }
     public void setHealth()
     {
-        health = (int)(dna.getHealth());
+	health = (int)(dna.getHealth());
     }
     public void consume(DNA dna2){
 	if(species == 8) dna.playerAdd(dna2);

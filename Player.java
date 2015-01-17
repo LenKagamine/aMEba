@@ -7,9 +7,9 @@ public class Player extends Organism{
     public Player(Map map,double x,double y,int species){
 	super(map,x,y,species);
 	angle = 0.0;
-	dna = new DNA(3);
-	health = (int)dna.getHealth();
-	speed = (int)dna.getSpeed();
+	dna = new DNA(3,1);
+	health = dna.getHealth();
+	speed = dna.getSpeed();
 	prevx = 100;
 	prevy = 100;
     }
@@ -35,7 +35,7 @@ public class Player extends Organism{
 	g.setColor(Color.red);
 	g.fillRoundRect((int)(GamePanel.WIDTH/4),(int)(GamePanel.HEIGHT-100),(int)(1.0*health/dna.getHealth()*GamePanel.WIDTH/2),50,20,20);
 	g.setColor(Color.yellow);
-	g.drawString(""+health+"/"+dna.getHealth(),(int)(GamePanel.WIDTH/2),(int)(GamePanel.HEIGHT-100)+25);
+	g.drawString((int)health+"/"+(int)dna.getHealth(),(int)(GamePanel.WIDTH/2),(int)(GamePanel.HEIGHT-100)+25);
     }
     public void mouse(int mx,int my){
 	this.mx = mx;
