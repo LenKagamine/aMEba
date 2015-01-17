@@ -5,11 +5,8 @@ public class Player extends Organism{
     private double prevx, prevy;
     private boolean attacking;
     public Player(Map map,double x,double y,int species){
-	super(map,x,y,species);
+	super(map,x,y,species,1);
 	angle = 0.0;
-	dna = new DNA(3,1);
-	health = dna.getHealth();
-	speed = dna.getSpeed();
 	prevx = 100;
 	prevy = 100;
     }
@@ -47,8 +44,7 @@ public class Player extends Organism{
     public boolean isAttacking(){
 	return attacking;
     }
-    public void collide ()
-    {
+    public void collide(){
 	x = prevx;
 	y = prevy;
     }

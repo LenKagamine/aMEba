@@ -2,13 +2,14 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 public abstract class Organism extends MapObject{
     protected double speed,angle;
     protected double health;
     protected DNA dna;
     protected int species;
     private long start;
-    public Organism(Map map,double x,double y,int species){
+    public Organism(Map map,double x,double y,int species,int level){
 	super(map,x,y);
 	this.species = species;
 	try{
@@ -27,11 +28,17 @@ public abstract class Organism extends MapObject{
 	} catch(Exception e){
 	    e.printStackTrace();
 	}
-	width = img.getWidth();
-	height = img.getHeight();
+	if(species == 8) dna = new DNA(3,level);
+	else dna = new DNA(species,level);
+	health = dna.getHealth();
+	speed = dna.getSpeed();
+	
+	width = (int)(img.getWidth()*(dna.getSize()+19)/20);
+	height = (int)(img.getHeight()*(dna.getSize()+19)/20);
+	img = resize(img,width,height);
 	boxwidth = width/2;
 	boxheight = height/2;
-	speed = Math.random()*3+2;
+	
 	angle = Math.random()*360;
 	
 	start = System.currentTimeMillis();
@@ -40,22 +47,24 @@ public abstract class Organism extends MapObject{
 	long elapsed = System.currentTimeMillis();
 	if(elapsed-start>1000){
 	    start = System.currentTimeMillis();
-	    health -= dna.getHunger();
+	    if(health > 0) health -= dna.getHunger();
 	}
     }
     public void draw(Graphics g){
 	mapx = map.getX();
 	mapy = map.getY();
-	g.setColor(Color.black);
-	g.drawRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height);
-	g.setColor(Color.red);
-	g.drawRect((int)(x-mapx-boxwidth/2),(int)(y-mapy-boxheight/2),boxwidth,boxheight);
-	AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
-	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-	g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
-	g.setColor(Color.white);
-	g.setFont(new Font("Tahoma", Font.BOLD, 20));
-	g.drawString((int)(dna.getSize())+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
+	if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT){ 
+	    g.setColor(Color.black);
+	    g.drawRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height);
+	    g.setColor(Color.red);
+	    g.drawRect((int)(x-mapx-boxwidth/2),(int)(y-mapy-boxheight/2),boxwidth,boxheight);
+	    AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
+	    AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	    g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
+	    g.setColor(Color.white);
+	    g.setFont(new Font("Tahoma", Font.BOLD, 20));
+	    g.drawString((int)(dna.getSize())+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
+	}
     }
     public void hit(double dmg){
 	health = Math.max(health-dmg,0);
@@ -69,9 +78,8 @@ public abstract class Organism extends MapObject{
     public DNA getDNA(){
 	return dna;
     }
-    public void setHealth()
-    {
-	health = (int)(dna.getHealth());
+    public void setHealth(){
+	health = dna.getHealth();
     }
     public void consume(DNA dna2){
 	if(species == 8) dna.playerAdd(dna2);
@@ -79,9 +87,22 @@ public abstract class Organism extends MapObject{
 	this.health += dna2.getHealth()/2;
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
 	this.speed = this.dna.getSpeed();
+	
+	width = (int)(img.getWidth()*(dna.getSize()+19)/20);
+	height = (int)(img.getHeight()*(dna.getSize()+19)/20);
+	img = resize(img,width,height);
+	boxwidth = width/2;
+	boxheight = height/2;
     }
     public void consume(Berry berry){
 	health += berry.recoverHealth();
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
+    }
+    private BufferedImage resize(BufferedImage img,int width,int height){
+	BufferedImage img2 = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+	Graphics g = img2.createGraphics();
+	g.drawImage(img,0,0,width,height,null);
+	g.dispose();
+	return img2;
     }
 }

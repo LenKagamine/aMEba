@@ -9,10 +9,7 @@ public class Enemy extends Organism{
     private double targetx,targety;
     private double prevx, prevy;
     public Enemy(Map map,double x,double y,int species,int level){
-	super(map,x,y,species);
-	dna = new DNA(species,level);
-	health = dna.getHealth();
-	speed = dna.getSpeed();
+	super(map,x,y,species,level);
 	atkstart = System.currentTimeMillis();
 	hitstart = -1;
 	prevx = 100;
