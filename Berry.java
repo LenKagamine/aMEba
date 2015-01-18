@@ -30,7 +30,9 @@ public class Berry extends MapObject{ //purple berries give an amount of health 
     public void draw(Graphics g){
 	mapx = map.getX();
 	mapy = map.getY();
-	g.drawImage(img, (int)(x-mapx-width/2), (int)(y-mapy-height/2), null);
+	
+	if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT)
+	    g.drawImage(img, (int)(x-mapx-width/2), (int)(y-mapy-height/2), null);
     }
     public int recoverHealth(){
 	return recover;

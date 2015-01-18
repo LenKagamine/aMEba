@@ -16,7 +16,8 @@ public class Rock extends MapObject{
     public void draw(Graphics g){
 	mapx = map.getX();
 	mapy = map.getY();
-	g.drawImage(img,(int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height,null);
+	if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT)
+	    g.drawImage(img,(int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height,null);
     }
     public boolean checkStuck(double x, double y){
 	return (x >= this.x-80 && x <= this.x+80 && y >= this.y-80 && y <= this.y+80);

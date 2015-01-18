@@ -107,21 +107,21 @@ public class Level{
 	p.draw(g);
     }
     public void spawnEnemy(){
-	boolean stuck = true;
-	double newx = 100;
-	double newy = 100;
-	while(stuck){
-	    stuck = false;
+	double newx = Math.random()*(Level.WIDTH-200)+100;
+	double newy = Math.random()*(Level.HEIGHT-200)+100;
+	while(stuck(newx,newy)){
 	    newx = Math.random()*(Level.WIDTH-200)+100;
 	    newy = Math.random()*(Level.HEIGHT-200)+100;
-	    for (int i=0;i<rocks.size();i++){
-		if(((Rock)rocks.get(i)).checkStuck(newx, newy))
-		    stuck = true;
-	    }
 	}
 	if(Math.random()*5 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2)));
 	else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*5)));
 	else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize())));
+    }
+    private boolean stuck(double newx,double newy){
+	for(int i=0;i<rocks.size();i++)
+	    if(((Rock)rocks.get(i)).checkStuck(newx, newy))
+		return true;
+	return false;
     }
     public void mouse(int mx,int my){
 	p.mouse(mx,my);

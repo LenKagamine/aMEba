@@ -33,9 +33,8 @@ public abstract class Organism extends MapObject{
 	health = dna.getHealth();
 	speed = dna.getSpeed();
 	
-	width = (int)(img.getWidth()*(dna.getSize()+19)/20);
-	height = (int)(img.getHeight()*(dna.getSize()+19)/20);
-	img = resize(img,width,height);
+	width = (int)(img.getWidth()*(dna.getSize()+9)/10);
+	height = (int)(img.getHeight()*(dna.getSize()+9)/10);
 	boxwidth = width/2;
 	boxheight = height/2;
 	
@@ -59,6 +58,7 @@ public abstract class Organism extends MapObject{
 	    g.setColor(Color.red);
 	    g.drawRect((int)(x-mapx-boxwidth/2),(int)(y-mapy-boxheight/2),boxwidth,boxheight);
 	    AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
+	    tx.scale((dna.getSize()+9)/10,(dna.getSize()+9)/10);
 	    AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	    g.drawImage(op.filter(img,null),(int)(x-mapx-width/2),(int)(y-mapy-height/2),null);
 	    g.setColor(Color.white);
@@ -88,21 +88,13 @@ public abstract class Organism extends MapObject{
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
 	this.speed = this.dna.getSpeed();
 	
-	width = (int)(img.getWidth()*(dna.getSize()+19)/20);
-	height = (int)(img.getHeight()*(dna.getSize()+19)/20);
-	img = resize(img,width,height);
+	width = (int)(img.getWidth()*(dna.getSize()+9)/10);
+	height = (int)(img.getHeight()*(dna.getSize()+9)/10);
 	boxwidth = width/2;
 	boxheight = height/2;
     }
     public void consume(Berry berry){
 	health += berry.recoverHealth();
 	if(this.health >= dna.getHealth()) this.health = dna.getHealth();
-    }
-    private BufferedImage resize(BufferedImage img,int width,int height){
-	BufferedImage img2 = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-	Graphics g = img2.createGraphics();
-	g.drawImage(img,0,0,width,height,null);
-	g.dispose();
-	return img2;
     }
 }
