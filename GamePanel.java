@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     //Thread
     private Thread thread;
     private boolean running;
-    private int FPS = 60;
+    private int FPS = 120;
     private long targetTime = 1000/FPS;
     //Image/Drawing
     private BufferedImage image;
@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	window.pack();
 	window.setLocationRelativeTo(null);
 	window.setVisible(true);
-	
     }
 
     public GamePanel(){
@@ -69,7 +68,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	    drawToScreen();
 	    
 	    elapsed = System.currentTimeMillis()-start;
-	    
 	    wait = targetTime - elapsed;
 	    
 	    if(wait < 0) wait = 0; //Negative wait time

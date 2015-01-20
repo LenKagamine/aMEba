@@ -36,7 +36,7 @@ public class Enemy extends Organism{
 	y += speed*Math.sin(angle);
 	if(x<width/2||x>Level.WIDTH-width/2||y<height/2||y>Level.HEIGHT-height/2) angle++;
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
 	/*int[] viewxi = new int[3],viewyi = new int[3];
 	for(int i=0;i<3;i++){
 	    viewxi[i] = (int)viewx[i];
@@ -67,6 +67,9 @@ public class Enemy extends Organism{
     }
     public void setFollow(boolean follow){
 	inview = follow;
+    }
+    public boolean following(){
+	return inview;
     }
     public void attack(Organism org){
 	if(inview && elapsed-atkstart>cooldown){

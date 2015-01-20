@@ -49,7 +49,7 @@ public abstract class Organism extends MapObject{
 	    if(health > 0) health -= dna.getHunger();
 	}
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
 	mapx = map.getX();
 	mapy = map.getY();
 	if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT){ 

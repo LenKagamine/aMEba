@@ -22,7 +22,7 @@ public class Map{
 	viewx = viewy = 0;
 	speed = 0.05;
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
 	g.drawImage(bg.getSubimage((int)viewx,(int)viewy,GamePanel.WIDTH,GamePanel.HEIGHT),0,0,GamePanel.WIDTH,GamePanel.HEIGHT,null);
     }
     public void setPos(Point2D target){

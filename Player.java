@@ -25,7 +25,7 @@ public class Player extends Organism{
 	
 	attacking = false;
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
 	super.draw(g);
 	g.setColor(Color.black);
 	g.fillRoundRect((int)(GamePanel.WIDTH/4)-5,(int)(GamePanel.HEIGHT-100)-5,(int)(GamePanel.WIDTH/2)+10,50+10,20,20);

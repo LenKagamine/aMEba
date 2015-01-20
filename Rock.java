@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.awt.geom.Rectangle2D;
 import javax.imageio.ImageIO;
 public class Rock extends MapObject{
+    private static BufferedImage img;
     public Rock(Map map,double x,double y){
 	super(map,x,y);
 	try{
@@ -13,7 +14,7 @@ public class Rock extends MapObject{
 	    e.printStackTrace();
 	}
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
 	mapx = map.getX();
 	mapy = map.getY();
 	if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT)
