@@ -9,49 +9,45 @@ public class Level{
     private long berrystart;
     public static int WIDTH, HEIGHT;
     public Level(){
-	map = new Map("gamebg2.jpg");
+	map = new Map("gamebg.jpg");
 	WIDTH = map.getWidth();
 	HEIGHT = map.getHeight();
-	p = new Player(map,320,240,8);
+	p = new Player(map,50,50,8);
 	e = new ArrayList();
 	berries = new ArrayList();
 	rocks = new ArrayList();
 	berrystart = System.currentTimeMillis();
 	for(int i=0;i<25;i++) spawnEnemy();
-	for(int i=0;i<10;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
+	for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
     }
     public void update(){
-	map.setPos(p.getScreenPos());
-	long berryelapsed = System.currentTimeMillis();
-	if(berries.size()<=10 && berryelapsed-berrystart>3000){
-	    berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
-	    berrystart = System.currentTimeMillis();
-	}
+	map.setPos(p.getScreenPos()); //map scrolling
+	if(Math.random()*20>berries.size()) berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100)); //berries
 	for(int i=0;i<e.size();i++){
 	    Enemy en = (Enemy)e.get(i);
 	    en.update();
-	    if(en.isDead()){
+	    en.setFollow(false);
+	    if(en.isDead()){ //enemy is dead
 		e.remove(i);
 		spawnEnemy();
 	    }
-	    for(int j=0;j<rocks.size();j++){
+	    for(int j=0;j<rocks.size();j++){ //enemy hit rock
 		if (en.getBoxRect().intersects(((Rock)rocks.get(j)).getBoxRect()))
 		    en.collide();
 	    }
-	    if(en.insight(p.getScreenPos())){
+	    if(en.insight(p.getScreenPos())){ //enemy follows player
 		en.setTarget(p.getScreenPos());
 		en.setFollow(true);
 		en.attack(p);
 	    }
 	    else{
-		en.setFollow(false);
 		for(int j=0;j<e.size();j++){ //enemies attack each other
-		    if(en.getSpecies() != ((Enemy)e.get(j)).getSpecies()){
-			if(en.insight(((Enemy)e.get(j)).getScreenPos())){
+		    if(en.getSpecies() != ((Enemy)e.get(j)).getSpecies()){ //different species
+			if(en.insight(((Enemy)e.get(j)).getScreenPos())){ //enemy sees other enemy
 			    en.setTarget(((Enemy)e.get(j)).getScreenPos());
 			    en.setFollow(true);
 			    en.attack(((Enemy)e.get(j)));
-			    if(((Enemy)e.get(j)).isDead()){
+			    if(((Enemy)e.get(j)).isDead()){ //enemy eat enemy
 				en.consume((((Enemy)e.get(j)).getDNA()));
 				e.remove(j);
 				spawnEnemy();
@@ -67,34 +63,33 @@ public class Level{
 		    }
 		}
 	    }
-	    for(int j=0;j<berries.size();j++){ //enemies eat berry
-		/*if(en.insight(((Berry)berries.get(j)).getScreenPos())){
+	    for(int j=0;j<berries.size();j++){
+		if(en.insight(((Berry)berries.get(j)).getScreenPos())){ //enemy sees berry
 		    en.setTarget(((Berry)berries.get(j)).getScreenPos());
 		    en.setFollow(true);
-		}*/
-		if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){
+		}
+		if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
 		    en.consume((Berry)berries.get(j));
 		    berries.remove(j);
 		}
 	    }
 	    if(p.isAttacking()){ //player attacks enemy
-		if(p.getBoxRect().intersects(en.getBoxRect())) en.hit((int)(p.getDNA().getAttack()));
-		if(en.isDead()){
+		if(p.getBoxRect().intersects(en.getBoxRect())) en.hit(p.getDNA().getAttack()); //attack
+		if(en.isDead()){ //kill & eat
 		    p.consume(en.getDNA());
 		    e.remove(i);
 		    spawnEnemy();
 		}
 	    }
-	    
 	}
-	for(int j=0;j<berries.size();j++){
+	p.update();
+	for(int j=0;j<berries.size();j++){ //player eat berry
 	    if(((Berry)berries.get(j)).getRect().intersects(p.getBoxRect())){
 		p.consume((Berry)berries.get(j));
 		berries.remove(j);
 	    }
 	}
-	p.update();
-	for(int j=0;j<rocks.size();j++){
+	for(int j=0;j<rocks.size();j++){ //player hit rocks
 	    if (p.getBoxRect().intersects(((Rock)rocks.get(j)).getBoxRect()))
 		p.collide();
 	}
@@ -114,7 +109,7 @@ public class Level{
 	    newy = Math.random()*(Level.HEIGHT-200)+100;
 	}
 	if(Math.random()*5 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2)));
-	else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*5)));
+	else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2+3)));
 	else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize())));
     }
     private boolean stuck(double newx,double newy){

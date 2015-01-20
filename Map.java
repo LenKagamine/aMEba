@@ -29,10 +29,10 @@ public class Map{
 	setPos(target.getX(),target.getY());
     }
     public void setPos(double x,double y){
-	if(x<300) viewx += (x-300)*speed;
-	else if(x>GamePanel.WIDTH-300) viewx += (x-GamePanel.WIDTH+300)*speed;
-	if(y<300) viewy += (y-300)*speed;
-	if(y>GamePanel.HEIGHT-300) viewy += (y-GamePanel.HEIGHT+300)*speed;      
+	if(x<500) viewx += (x-500)*speed;
+	else if(x>GamePanel.WIDTH-500) viewx += (x-GamePanel.WIDTH+500)*speed;
+	if(y<500) viewy += (y-500)*speed;
+	if(y>GamePanel.HEIGHT-500) viewy += (y-GamePanel.HEIGHT+500)*speed;      
 	if(viewx<0) viewx = 0;
 	if(viewx>xmax) viewx = xmax;
 	if(viewy<0) viewy = 0;
