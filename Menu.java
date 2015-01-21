@@ -10,6 +10,7 @@ public class Menu{
     private boolean inst;
     private int currentChoice = 0;
     private Color titleColor;
+<<<<<<< Updated upstream
     private Font titleFont,medFont,smallFont;
     public Menu(){
 	map = new Map("menubg.png");
@@ -24,13 +25,31 @@ public class Menu{
 	};
 	back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Back");
 	inst = false;
+=======
+    private Font titleFont;
+    private boolean instruct;
+    private JPanel gamepanel;
+    public Menu(JPanel gamepanel){
+ map = new Map("menubg.png");
+ this.gamepanel = gamepanel;
+ titleColor = new Color(0,204,204);
+ titleFont = new Font("Arial",Font.PLAIN,28);
+ instruct = false;
+ btns = new Button[]{
+     new Button(GamePanel.WIDTH/2-80,350,160,50,"Play"),
+     new Button(GamePanel.WIDTH/2-80,410,160,50,"God Mode"),
+     new Button(GamePanel.WIDTH/2-80,470,160,50,"Instructions"),
+     new Button(GamePanel.WIDTH/2-80,530,160,50,"Exit")
+ };
+>>>>>>> Stashed changes
     }
 
     public void update(){
-	map.setPos(mx,my);
+ map.setPos(mx,my);
     }
 
     public void draw(Graphics2D g){
+<<<<<<< Updated upstream
 	map.draw(g);
 	if(inst){
 	    int midwidth = GamePanel.WIDTH/2, midheight = GamePanel.HEIGHT/2;
@@ -65,8 +84,16 @@ public class Menu{
 	    g.drawString("aMEba",(GamePanel.WIDTH-g.getFontMetrics().stringWidth("aMEba"))/2,150);
 	    for(int i=0;i<btns.length;i++) btns[i].draw(g);
 	}
+=======
+ map.draw(g);
+ g.setColor(titleColor);
+ g.setFont(titleFont);
+ g.drawString("aMEba",(GamePanel.WIDTH-g.getFontMetrics().stringWidth("aMEba"))/2,70);
+ for(int i=0;i<btns.length;i++) btns[i].draw(g);
+>>>>>>> Stashed changes
     }
     public void click(int mx,int my){
+<<<<<<< Updated upstream
 	if(inst){
 	    if(back.click(mx,my)) inst = false;
 	}
@@ -79,11 +106,26 @@ public class Menu{
 		}
 	    }
 	}
+=======
+ for(int i=0;i<btns.length;i++){
+     if(btns[i].click(mx,my)){
+  if(i==0) GamePanel.setLevel(1);
+  else if (i==1) GamePanel.setLevel(2);
+  else if (i == 2)
+  {
+      if (instruct == false) //only open instructions once (to prevent more and more windows)
+   gamepanel.add (new Instructions ());
+      instruct = true;
+  }
+  else if(i==3) System.exit(1);
+     }
+ }
+>>>>>>> Stashed changes
     }
 
     public void mouse(int mx,int my){
-	this.mx = mx;
-	this.my = my;
+ this.mx = mx;
+ this.my = my;
     }
 }
 

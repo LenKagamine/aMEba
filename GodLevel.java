@@ -12,7 +12,7 @@ public class GodLevel{
   private double mx, my;
   public static int WIDTH, HEIGHT;
   public GodLevel(){
-    map = new Map("gamebg2.jpg");
+    map = new Map("gamebg.jpg");
     WIDTH = map.getWidth();
     HEIGHT = map.getHeight();
     btns = new Button[]{
