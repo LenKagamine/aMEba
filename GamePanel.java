@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     //Games
     private static Menu menu;
     private static Level level;
+    private static GodLevel godLevel;
     private static int state = 0;
     
     public static void main(String[] args){
@@ -82,12 +83,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void update(){//Update game
 	if(state == 0) menu.update();
 	else if(state == 1) level.update();
+	else if(state == 2) godLevel.update();
     }
     public void draw(){//Draw game
 	g.setColor(Color.white);
 	g.fillRect(0,0,WIDTH,HEIGHT);
 	if(state == 0) menu.draw(g);
 	else if(state == 1) level.draw(g);
+	else if(state == 2) godLevel.draw(g);
     }
     public void drawToScreen(){ //Draw buffered image to level
 	Graphics g2 = getGraphics();
@@ -98,9 +101,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	if(lv == 0){
 	    menu = new Menu();
 	    level = null;
+	    godLevel = new GodLevel();
 	}
 	else if(lv == 1){
 	    level = new Level();
+	    menu = null;
+	}
+	else if(lv == 2){
+	    godLevel = new GodLevel();
 	    menu = null;
 	}
 	state = lv;
@@ -109,12 +117,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	try{
 	    if(state == 0) menu.mouse(e.getX(),e.getY());
 	    else if(state == 1) level.mouse(e.getX(),e.getY());
+	    else if(state == 2) godLevel.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseMoved(MouseEvent e){
 	try{
 	    if(state == 0) menu.mouse(e.getX(),e.getY());
 	    else if(state == 1) level.mouse(e.getX(),e.getY());
+	    else if(state == 2) godLevel.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseClicked(MouseEvent e){}
@@ -124,6 +134,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	try{
 	    if(state == 0) menu.click(e.getX(),e.getY());
 	    else if(state == 1) level.click(e.getX(),e.getY());
+	    else if(state == 2) godLevel.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseReleased(MouseEvent e){}

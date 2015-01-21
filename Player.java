@@ -48,4 +48,7 @@ public class Player extends Organism{
 	x = prevx;
 	y = prevy;
     }
+    public double getHealth(){
+	return health;
+    }
 }
