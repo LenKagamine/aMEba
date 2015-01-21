@@ -10,6 +10,7 @@ public class AudioPlayer implements Runnable{
 	load(s);
     }
     public void load(String s){
+<<<<<<< Updated upstream
 	fileName = s;
 	try{
 	    player = new Player(new FileInputStream(s)); //Load audio
@@ -18,6 +19,16 @@ public class AudioPlayer implements Runnable{
 	catch(Exception e){
 	    e.printStackTrace();
 	}
+=======
+ fileName = s;
+ try{
+//     player = new Player(new FileInputStream(s)); //Load audio
+     thread = new Thread(this); //Create new thread for audio
+ }
+ catch(Exception e){
+     e.printStackTrace();
+ }
+>>>>>>> Stashed changes
     }
     public void play(){
 	thread = null; //Reset thread
@@ -30,6 +41,7 @@ public class AudioPlayer implements Runnable{
 	play();
     }
     public void stop(){
+<<<<<<< Updated upstream
 	loop = false; //Stop everything
 	thread = null;
 	playing = false;
@@ -46,6 +58,24 @@ public class AudioPlayer implements Runnable{
 	    if(loop) load(fileName); //Load again if looping
 	} while(loop);
 	playing = false; //Stopped playing
+=======
+ loop = false; //Stop everything
+ thread = null;
+ playing = false;
+// player.close();
+    }
+    public void run(){
+ do{
+     try{
+//  player.play(); //Play normally
+     }
+     catch(Exception e){
+  e.printStackTrace();
+     }
+     if(loop) load(fileName); //Load again if looping
+ } while(loop);
+ playing = false; //Stopped playing
+>>>>>>> Stashed changes
     }
     public boolean isPlaying(){
 	return playing;
