@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     //Games
     private static Menu menu;
     private static Level level;
-    private static boolean ingame = false;
+    private static int state = 0;
     
     public static void main(String[] args){
 	JFrame window = new JFrame("Summative");
@@ -80,35 +80,41 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     }
     
     public void update(){//Update game
-	if(ingame) level.update();
-	else menu.update();
+	if(state == 0) menu.update();
+	else if(state == 1) level.update();
     }
     public void draw(){//Draw game
 	g.setColor(Color.white);
 	g.fillRect(0,0,WIDTH,HEIGHT);
-	if(ingame) level.draw(g);
-	else menu.draw(g);
+	if(state == 0) menu.draw(g);
+	else if(state == 1) level.draw(g);
     }
     public void drawToScreen(){ //Draw buffered image to level
 	Graphics g2 = getGraphics();
 	g2.drawImage(image,0,0,WIDTH,HEIGHT,null);
 	g2.dispose();
     }
-    public static void startGame(){
-	level = new Level();
-	ingame = true;
-	menu = null;
+    public static void setLevel(int lv){
+	if(lv == 0){
+	    menu = new Menu();
+	    level = null;
+	}
+	else if(lv == 1){
+	    level = new Level();
+	    menu = null;
+	}
+	state = lv;
     }
     public void mouseDragged(MouseEvent e){
 	try{
-	    if(ingame) level.mouse(e.getX(),e.getY());
-	    else menu.mouse(e.getX(),e.getY());
+	    if(state == 0) menu.mouse(e.getX(),e.getY());
+	    else if(state == 1) level.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseMoved(MouseEvent e){
 	try{
-	    if(ingame) level.mouse(e.getX(),e.getY());
-	    else menu.mouse(e.getX(),e.getY());
+	    if(state == 0) menu.mouse(e.getX(),e.getY());
+	    else if(state == 1) level.mouse(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseClicked(MouseEvent e){}
@@ -116,8 +122,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void mouseExited(MouseEvent e){}
     public void mousePressed(MouseEvent e){
 	try{
-	    if(ingame) level.click(e.getX(),e.getY());
-	    else menu.click(e.getX(),e.getY());
+	    if(state == 0) menu.click(e.getX(),e.getY());
+	    else if(state == 1) level.click(e.getX(),e.getY());
 	} catch(Exception ex){}
     }
     public void mouseReleased(MouseEvent e){}
