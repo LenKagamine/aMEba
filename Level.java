@@ -10,11 +10,14 @@ public class Level{
     //private AudioPlayer bgm;
     private IconButton pause;
     private boolean paused = false;
+    private Button returner;//
+    private boolean dead = false;//
     public static int WIDTH, HEIGHT;
     public Level(){
 	map = new Map("gamebg.jpg");
 	WIDTH = map.getWidth();
 	HEIGHT = map.getHeight();
+	returner = new Button((GamePanel.WIDTH/2-100),400,200,50,"Return to Menu");
 	p = new Player(map,50,50,8);
 	e = new ArrayList();
 	berries = new ArrayList();
@@ -27,6 +30,7 @@ public class Level{
 	pause = new IconButton(10,10,"pause.png");
     }
     public void update(){
+    	if (dead) paused = true;//
 	if(!paused){
 	map.setPos(p.getScreenPos()); //map scrolling
 	if(Math.random()*20>berries.size()) berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100)); //berries
@@ -97,6 +101,8 @@ public class Level{
 	    }}
 	}
 	p.update();
+	if (p.getHealth()<=0)//
+                dead = true;
 	for(int j=0;j<berries.size();j++){ //player eat berry
 	    if(((Berry)berries.get(j)).getRect().intersects(p.getBoxRect())){
 		p.consume((Berry)berries.get(j));
@@ -109,6 +115,18 @@ public class Level{
 	    }
 	}
     }
+    public void restart(Graphics2D g)
+    {
+        g.setColor(Color.cyan);
+        g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
+        g.setColor(Color.black);
+        g.fillRect(300, 100, GamePanel.WIDTH-600, GamePanel.HEIGHT-300);
+        g.setColor(Color.white);
+        g.setFont(new Font("Tahoma",Font.PLAIN,96));
+        g.drawString("You Died", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("You Died"))/2, 250);
+        g.setFont(new Font("Tahoma",Font.PLAIN,48));
+        g.drawString("Score:", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Score:"))/2, 350);
+    }
     public void draw(Graphics2D g){
 	map.draw(g);
 	for(int i=0;i<e.size();i++) ((Enemy)e.get(i)).draw(g);
@@ -116,6 +134,11 @@ public class Level{
 	for(int i=0;i<rocks.size();i++) ((Rock)rocks.get(i)).draw(g);
 	p.draw(g);
 	pause.draw(g);
+	if (dead)
+        {
+            restart(g);
+            returner.draw(g);
+        }
     }
     public void spawnEnemy(){
 	double newx = Math.random()*(Level.WIDTH-200)+100;
