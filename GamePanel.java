@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void run(){ //Main game loop
 	image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	g = (Graphics2D) image.getGraphics();
-	menu = new Menu();
+	menu = new Menu(this);
 	running = true;
 	
 	long start,elapsed,wait; //Time keeping for FPS
