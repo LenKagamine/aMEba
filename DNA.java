@@ -70,7 +70,7 @@ public class DNA{
 	stats[2] += dna.getStamina()/8.5;
 	stats[3] += dna.getAttack()/15;
 	stats[4] += dna.getDefense()/15;
-	stats[5] += dna.getHunger()/15;
+	stats[5] += dna.getHunger()/7;
 	stats[6] += dna.getStaminaRecharge()/15;
 	stats[7] += dna.getSize()/15;
     }
