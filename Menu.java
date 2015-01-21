@@ -23,7 +23,7 @@ public class Menu{
      new Button(GamePanel.WIDTH/2-80,470,160,50,"Instructions"),
      new Button(GamePanel.WIDTH/2-80,530,160,50,"Exit")
  };
- back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Back");
+ back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT-120,100,50,"Back");
  inst = false;
     }
 
