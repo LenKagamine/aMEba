@@ -145,7 +145,7 @@ public class Level{
 	}
 	if(Math.random()*5 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2)));
 	else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2+3)));
-	else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize())));
+	else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(Math.random()*(p.getDNA().getSize()))+1));
     }
     private boolean stuck(double newx,double newy){
 	for(int i=0;i<rocks.size();i++)
