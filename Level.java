@@ -7,7 +7,7 @@ public class Level{
     private ArrayList berries;
     private ArrayList rocks;
     private long berrystart;
-    private AudioPlayer bgm;
+    //private AudioPlayer bgm;
     private IconButton pause;
     private boolean paused = false;
     public static int WIDTH, HEIGHT;
@@ -22,8 +22,8 @@ public class Level{
 	berrystart = System.currentTimeMillis();
 	for(int i=0;i<25;i++) spawnEnemy();
 	for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
-	bgm = new AudioPlayer("intro.mp3");
-	bgm.loop();
+	//bgm = new AudioPlayer("intro.mp3");
+	//bgm.loop();
 	pause = new IconButton(10,10,"pause.png");
     }
     public void update(){
