@@ -37,7 +37,6 @@ public class Menu{
     }
 
     public void click(int mx,int my){
-<<<<<<< Updated upstream
 	for(int i=0;i<btns.length;i++){
 	    if(btns[i].click(mx,my)){
 		if(i==0) GamePanel.setLevel(1);
@@ -50,20 +49,6 @@ public class Menu{
 		else if(i==2) System.exit(1);
 	    }
 	}
-=======
-        for(int i=0;i<btns.length;i++){
-            if(btns[i].click(mx,my)){
-                if(i==0) GamePanel.startGame();
-                else if (i == 1)
-                {
-//                    if (instruct == false) //only open instructions once (to prevent more and more windows)
-//                        gamepanel.add (new Instructions ());
-                    instruct = true;
-                }
-                else if(i==2) System.exit(1);
-            }
-        }
->>>>>>> Stashed changes
     }
 
     public void mouse(int mx,int my){
