@@ -7,10 +7,13 @@ public class Level{
 	private ArrayList<Berry> berries;
 	private ArrayList<Rock> rocks;
 	private IconButton pause;
+	
 	private boolean paused = false;
 	private Button returner;
 	private boolean dead = false;
 	public static int WIDTH, HEIGHT;
+	private long  timer, elapsed;
+	private int time = 0;
 	public Level(){
 		map = new Map("gamebg.jpg");
 		WIDTH = map.getWidth();
@@ -23,10 +26,12 @@ public class Level{
 		for(int i=0;i<25;i++) spawnEnemy();
 		for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
 		pause = new IconButton(10,10,"pause.png");
+		timer = System.currentTimeMillis();
 	}
 	public void update(){
 		if(!dead && !paused){
 			map.setPos(p.getScreenPos()); //map scrolling
+			elapsed = System.currentTimeMillis();
 			if(Math.random()*20>berries.size()) berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100)); //berries
 			for(int i=0;i<e.size();i++){
 				Enemy en = e.get(i);
@@ -96,6 +101,11 @@ public class Level{
 			}
 			p.update();
 			if(p.getHealth()<=0) dead = true;
+			else if (elapsed - timer>= 200)
+            {
+                time++;
+                timer = System.currentTimeMillis();
+            }
 			for(int j=0;j<berries.size();j++){ //player eat berry
 				if((berries.get(j)).getRect().intersects(p.getBoxRect())){
 					p.consume(berries.get(j));
@@ -117,7 +127,7 @@ public class Level{
 		g.setFont(new Font("Tahoma",Font.PLAIN,96));
 		g.drawString("You Died", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("You Died"))/2, 250);
 		g.setFont(new Font("Tahoma",Font.PLAIN,48));
-		g.drawString("Score:", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Score:"))/2, 350);
+		g.drawString("Score: " + time, (GamePanel.WIDTH-g.getFontMetrics().stringWidth(" Score: " + time))/2, 350);
 	}
 	public void draw(Graphics2D g){
 		map.draw(g);
