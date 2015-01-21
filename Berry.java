@@ -14,7 +14,7 @@ public class Berry extends MapObject{
 	    }
 	}
 	else{
-	    recover = 12;
+	    recover = 20;
 	    try{
 		img = ImageIO.read(getClass().getResourceAsStream("berry.png"));
 	    } catch(Exception e){
