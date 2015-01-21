@@ -9,17 +9,18 @@ public class GodLevel{
   private ArrayList e;
   private ArrayList berries;
   private ArrayList rocks;
-  private long berrystart;
   private double mx, my;
+  private IconButton pause;
+  private boolean paused = false;
   public static int WIDTH, HEIGHT;
   public GodLevel(){
     map = new Map("gamebg.jpg");
     WIDTH = map.getWidth();
     HEIGHT = map.getHeight();
     btns = new Button[]{
-      new Button(GamePanel.WIDTH/10+50,50,100,50,"Rock"),
-      new Button(GamePanel.WIDTH*2/10+50,50,100,50,"Berry"),
-      new Button(GamePanel.WIDTH*3/10+50,50,100,50,"Enemy")
+      new Button(GamePanel.WIDTH/10,50,100,50,"Rock"),
+      new Button(GamePanel.WIDTH*2/10,50,100,50,"Berry"),
+      new Button(GamePanel.WIDTH*3/10,50,100,50,"Enemy")
     };
     cursorType = -1;
     /*cursorType governs what is selected
@@ -33,13 +34,15 @@ public class GodLevel{
     e = new ArrayList();
     berries = new ArrayList();
     rocks = new ArrayList();
-    berrystart = System.currentTimeMillis();
+    pause = new IconButton(10,10,"pause.png");
   }
   public void update(){
     map.setPos(mx,my);
-    for(int i=0;i<e.size();i++){
+    if(!paused)
+      for(int i=0;i<e.size();i++){
       Enemy en = (Enemy)e.get(i);
       en.update();
+      en.setFollow(false);
       if(en.isDead()){
         e.remove(i);
       }
@@ -48,35 +51,35 @@ public class GodLevel{
           if (en.getBoxRect().intersects(((Rock)rocks.get(j)).getBoxRect()))
             en.collide();
         }
-        en.setFollow(false);
         for(int j=0;j<e.size();j++){ //enemies attack each other
-          if(en.getSpecies() != ((Enemy)e.get(j)).getSpecies()){
-            if(en.insight(((Enemy)e.get(j)).getScreenPos())){
-              en.setTarget(((Enemy)e.get(j)).getScreenPos());
+          Enemy en2 = (Enemy)e.get(j);
+          if(en.getSpecies() != en2.getSpecies()){ //different species
+            if(en.insight(en2.getScreenPos())){ //enemy sees other enemy
+              en.setTarget(en2.getScreenPos());
               en.setFollow(true);
-              en.attack(((Enemy)e.get(j)));
-              if(((Enemy)e.get(j)).isDead()){
-                en.consume((((Enemy)e.get(j)).getDNA()));
+              en.attack(en2);
+              if(en2.isDead()){ //enemy eat enemy
+                en.consume(en2.getDNA());
                 e.remove(j);
               }
             }
             else{
-              if(en.insight(((Enemy)e.get(j)).getScreenPos())){
-                en.setTarget(((Enemy)e.get(j)).getScreenPos());
+              if(en.insight(en2.getScreenPos())){
+                en.setTarget(en2.getScreenPos());
                 en.setFollow(true);
-                en.mate((Enemy)e.get(j));
+                en.mate(en2);
               }
             }
           }
         }
-        for(int j=0;j<berries.size();j++){ //enemies eat berry
-          /*if(en.insight(((Berry)berries.get(j)).getScreenPos())){
-           en.setTarget(((Berry)berries.get(j)).getScreenPos());
-           en.setFollow(true);
-           }*/
-          if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){
+        for(int j=0;j<berries.size();j++){
+          if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
             en.consume((Berry)berries.get(j));
             berries.remove(j);
+          }
+          else if(en.insight(((Berry)berries.get(j)).getScreenPos())){ //enemy sees berry
+            en.setTarget(((Berry)berries.get(j)).getScreenPos());
+            en.setFollow(true);
           }
         }
       }
@@ -88,6 +91,7 @@ public class GodLevel{
     for(int i=0;i<berries.size();i++) ((Berry)berries.get(i)).draw(g);
     for(int i=0;i<rocks.size();i++) ((Rock)rocks.get(i)).draw(g);
     for(int i=0;i<btns.length;i++) btns[i].draw(g);
+    pause.draw(g);
   }
   private boolean stuck(double newx,double newy){
     for(int i=0;i<rocks.size();i++)
@@ -101,6 +105,10 @@ public class GodLevel{
   }
   public void click(int mx,int my){
     buttonActivated = false;
+    if(pause.click(mx,my)){
+      paused = !paused;
+      buttonActivated = true;
+    }
     for(int i=0;i<btns.length;i++){
       if(btns[i].click(mx,my)){
         buttonActivated = true;
