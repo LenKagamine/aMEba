@@ -9,6 +9,7 @@ public class Level{
 	private IconButton pause;
 	
 	private boolean paused = false;
+	private Button quit;
 	private Button returner;
 	private boolean dead = false;
 	public static int WIDTH, HEIGHT;
@@ -26,6 +27,7 @@ public class Level{
 		for(int i=0;i<25;i++) spawnEnemy();
 		for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
 		pause = new IconButton(10,10,"pause.png");
+		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
 		timer = System.currentTimeMillis();
 	}
 	public void update(){
@@ -118,13 +120,13 @@ public class Level{
 		}
 	}
 	public void restart(Graphics2D g){
-		g.setColor(Color.cyan);
+		g.setColor(Color.red);
 		g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
 		g.setColor(Color.black);
 		g.fillRect(300, 100, GamePanel.WIDTH-600, GamePanel.HEIGHT-300);
 		g.setColor(Color.white);
 		g.setFont(new Font("Tahoma",Font.PLAIN,96));
-		g.drawString("You Died", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("You Died"))/2, 250);
+		g.drawString("Game Over", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Game Over"))/2, 250);
 		g.setFont(new Font("Tahoma",Font.PLAIN,48));
 		g.drawString("Score: " + time, (GamePanel.WIDTH-g.getFontMetrics().stringWidth(" Score: " + time))/2, 350);
 	}
@@ -135,7 +137,17 @@ public class Level{
 		for(int i=0;i<rocks.size();i++) rocks.get(i).draw(g);
 		p.draw(g);
 		pause.draw(g);
-		if(dead){
+		if(paused){
+			g.setColor(Color.cyan);
+			g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
+			g.setColor(Color.black);
+			g.fillRect(300, 100, GamePanel.WIDTH-600, GamePanel.HEIGHT-300);
+			g.setColor(Color.white);
+			g.setFont(new Font("Tahoma",Font.PLAIN,50));
+			g.drawString("Paused", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Paused"))/2, 250);
+			quit.draw(g);
+		}
+		else if(dead){
 			restart(g);
 			returner.draw(g);
 		}
@@ -163,6 +175,12 @@ public class Level{
 	public void click(int mx,int my){
 		p.click(mx,my);
 		if(pause.click(mx,my)) paused = !paused;
+		if(paused){
+			if(quit.click(mx,my)){
+				paused = false;
+				dead = true;
+			}
+		}
 		if(dead && returner.click(mx,my)) GamePanel.setLevel(0);
 	}
 }
