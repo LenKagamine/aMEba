@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
     public void run(){ //Main game loop
 	image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	g = (Graphics2D) image.getGraphics();
-	menu = new Menu(this);
+	menu = new Menu();
 	running = true;
 	
 	long start,elapsed,wait; //Time keeping for FPS
@@ -95,14 +95,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	g2.dispose();
     }
     public static void setLevel(int lv){
-	/*if(lv == 0){
+	if(lv == 0){
 	    menu = new Menu();
 	    level = null;
 	}
-	else if(lv == 1){*/
+	else if(lv == 1){
 	    level = new Level();
 	    menu = null;
-	//}
+	}
 	state = lv;
     }
     public void mouseDragged(MouseEvent e){
