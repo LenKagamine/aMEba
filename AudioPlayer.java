@@ -1,4 +1,4 @@
-import javazoom.jl.player.Player;
+//import javazoom.jl.player.Player;
 import java.io.FileInputStream;
 public class AudioPlayer implements Runnable{
     private Player player; //In JLayer (external class)
@@ -7,7 +7,7 @@ public class AudioPlayer implements Runnable{
     private String fileName;
     private boolean playing = false; //If audio is currently playing
     public AudioPlayer(String s){
-	load(s);
+ load(s);
     }
     public void load(String s){
  fileName = s;
@@ -20,14 +20,14 @@ public class AudioPlayer implements Runnable{
  }
     }
     public void play(){
-	thread = null; //Reset thread
-	load(fileName); //Load audio
-	playing = true;
-	thread.start(); //Start audio
+ thread = null; //Reset thread
+ load(fileName); //Load audio
+ playing = true;
+ thread.start(); //Start audio
     }
     public void loop(){
-	loop = true; //Set as looping then play
-	play();
+ loop = true; //Set as looping then play
+ play();
     }
     public void stop(){
  loop = false; //Stop everything
@@ -48,6 +48,6 @@ public class AudioPlayer implements Runnable{
  playing = false; //Stopped playing
     }
     public boolean isPlaying(){
-	return playing;
+ return playing;
     }
 }
