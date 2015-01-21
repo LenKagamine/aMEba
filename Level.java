@@ -43,7 +43,7 @@ public class Level{
 				}
 				else{
 					for(int j=0;j<rocks.size();j++){ //enemy hit rock
-						if(en.getBoxRect().intersects((rocks.get(j)).getBoxRect()))
+						if(en.getBoxRect().intersects(rocks.get(j).getBoxRect()))
 							en.collide();
 					}
 					if(en.insight(p.getScreenPos())){ //enemy follows player
@@ -77,12 +77,12 @@ public class Level{
 					}
 					if(!en.following()){
 						for(int j=0;j<berries.size();j++){
-							if((berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
+							if(berries.get(j).getRect().intersects(en.getBoxRect())){ //enemy eat berry
 								en.consume(berries.get(j));
 								berries.remove(j);
 							}
-							else if(en.insight((berries.get(j)).getScreenPos())){ //enemy sees berry
-								en.setTarget((berries.get(j)).getScreenPos());
+							else if(en.insight(berries.get(j).getScreenPos())){ //enemy sees berry
+								en.setTarget(berries.get(j).getScreenPos());
 								en.setFollow(true);
 							}
 						}
@@ -101,19 +101,18 @@ public class Level{
 			}
 			p.update();
 			if(p.getHealth()<=0) dead = true;
-			else if (elapsed - timer>= 200)
-            {
+			else if(elapsed - timer >= 200){
                 time++;
                 timer = System.currentTimeMillis();
             }
 			for(int j=0;j<berries.size();j++){ //player eat berry
-				if((berries.get(j)).getRect().intersects(p.getBoxRect())){
+				if(berries.get(j).getRect().intersects(p.getBoxRect())){
 					p.consume(berries.get(j));
 					berries.remove(j);
 				}
 			}
 			for(int j=0;j<rocks.size();j++){ //player hit rocks
-				if(p.getBoxRect().intersects((rocks.get(j)).getBoxRect()))
+				if(p.getBoxRect().intersects(rocks.get(j).getBoxRect()))
 					p.collide();
 			}
 		}
@@ -131,9 +130,9 @@ public class Level{
 	}
 	public void draw(Graphics2D g){
 		map.draw(g);
-		for(int i=0;i<e.size();i++) (e.get(i)).draw(g);
-		for(int i=0;i<berries.size();i++) (berries.get(i)).draw(g);
-		for(int i=0;i<rocks.size();i++) (rocks.get(i)).draw(g);
+		for(int i=0;i<e.size();i++) e.get(i).draw(g);
+		for(int i=0;i<berries.size();i++) berries.get(i).draw(g);
+		for(int i=0;i<rocks.size();i++) rocks.get(i).draw(g);
 		p.draw(g);
 		pause.draw(g);
 		if(dead){
@@ -154,7 +153,7 @@ public class Level{
 	}
 	private boolean stuck(double newx,double newy){
 		for(int i=0;i<rocks.size();i++)
-			if((rocks.get(i)).checkStuck(newx, newy))
+			if(rocks.get(i).checkStuck(newx, newy))
 				return true;
 		return false;
 	}

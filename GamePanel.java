@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 		long start,elapsed,wait; //Time keeping for FPS
 		while(running){
 			start = System.currentTimeMillis();
-
+			
 			update();
 			draw();
 			drawToScreen();
@@ -100,8 +100,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	public static void setLevel(int lv){
 		if(lv == 0){
 			menu = new Menu();
-			level = null;
 			godLevel = new GodLevel();
+			level = null;
 		}
 		else if(lv == 1){
 			level = new Level();
