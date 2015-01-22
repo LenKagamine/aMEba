@@ -1,6 +1,4 @@
 public class DNA{
-	//private double speed, health, hunger, stamina, staminaRecharge, attack, defense, size;
-	//private double[] stats = {speed, health, hunger, stamina, staminaRecharge, attack, defense, size};
 	private double[] stats;
 
 	public DNA(int num,int level){//for num: buggy = 0, gooey = 1, aqua = 2, biter = 3, diatom = 4, triangle = 8
@@ -17,7 +15,7 @@ public class DNA{
 		stats[num] *= 1.2;
 	}
 
-	public double getSpeed(){
+	public double getSpeed(){ //getters for stats
 		return stats[0];
 	}
 
@@ -49,7 +47,7 @@ public class DNA{
 		return stats[7];
 	}
 
-	public void add(DNA dna){
+	public void add(DNA dna){ //when DNA is consumed, boost stats
 		stats[0] += dna.getSpeed()/19;
 		if (stats[0] >= 12)
 			stats[0] = 12;
@@ -62,9 +60,9 @@ public class DNA{
 		stats[7] += dna.getSize()/10;
 	}
 
-	public void playerAdd(DNA dna){
+	public void playerAdd(DNA dna){ //when DNA is consumed, boost stats
 		stats[0] += dna.getSpeed()/25;
-		if (stats[0] >= 12)
+		if (stats[0] >= 12) //max speed
 			stats[0] = 12;
 		stats[1] += dna.getHealth()/10; 
 		stats[2] += dna.getStamina()/8.5;
