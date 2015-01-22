@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	private static int state = 0;
 
 	public static void main(String[] args){
-		JFrame window = new JFrame("Summative");
+		JFrame window = new JFrame("aMEba");
 		window.setContentPane(new GamePanel());
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//window.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
