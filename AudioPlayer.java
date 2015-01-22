@@ -1,5 +1,4 @@
 import javazoom.jl.player.Player;
-import java.io.FileInputStream;
 public class AudioPlayer implements Runnable{
 	private Player player; //In JLayer (external class)
 	private Thread thread;
@@ -12,7 +11,7 @@ public class AudioPlayer implements Runnable{
 	public void load(String s){
 		fileName = s;
 		try{
-			player = new Player(new FileInputStream(s)); //Load audio
+			player = new Player(getClass().getResourceAsStream(s)); //Load audio
 			thread = new Thread(this); //Create new thread for audio
 		}
 		catch(Exception e){
