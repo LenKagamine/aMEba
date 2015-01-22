@@ -9,6 +9,7 @@ public class Map{
 	private BufferedImage bg;
 	private int xmax,ymax;
 	private int width,height;
+	private int border;
 	public Map(String img){
 		try{
 			bg = ImageIO.read(getClass().getResourceAsStream(img));
@@ -21,6 +22,7 @@ public class Map{
 		ymax = height-GamePanel.HEIGHT;
 		viewx = viewy = 0;
 		speed = 0.05;
+		border = 500;
 	}
 	public void draw(Graphics2D g){
 		g.drawImage(bg.getSubimage((int)viewx,(int)viewy,GamePanel.WIDTH,GamePanel.HEIGHT),0,0,GamePanel.WIDTH,GamePanel.HEIGHT,null);
@@ -29,14 +31,20 @@ public class Map{
 		setPos(target.getX(),target.getY());
 	}
 	public void setPos(double x,double y){
-		if(x<500) viewx += (x-500)*speed;
-		else if(x>GamePanel.WIDTH-500) viewx += (x-GamePanel.WIDTH+500)*speed;
-		if(y<500) viewy += (y-500)*speed;
-		if(y>GamePanel.HEIGHT-500) viewy += (y-GamePanel.HEIGHT+500)*speed;      
+		if(x<border) viewx += (x-border)*speed;
+		else if(x>GamePanel.WIDTH-border) viewx += (x-GamePanel.WIDTH+border)*speed;
+		if(y<border) viewy += (y-border)*speed;
+		if(y>GamePanel.HEIGHT-border) viewy += (y-GamePanel.HEIGHT+border)*speed;      
 		if(viewx<0) viewx = 0;
 		if(viewx>xmax) viewx = xmax;
 		if(viewy<0) viewy = 0;
 		if(viewy>ymax) viewy = ymax;
+	}
+	public void setBorder(int b){
+		border = b;
+	}
+	public void setSpeed(double s){
+		speed = s;
 	}
 	public double getX(){
 		return viewx;
