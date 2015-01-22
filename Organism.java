@@ -52,10 +52,6 @@ public abstract class Organism extends MapObject{
 		mapx = map.getX();
 		mapy = map.getY();
 		if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT){ 
-			/*g.setColor(Color.black);
-	    g.drawRect((int)(x-mapx-width/2),(int)(y-mapy-height/2),width,height);
-	    g.setColor(Color.red);
-	    g.drawRect((int)(x-mapx-boxwidth/2),(int)(y-mapy-boxheight/2),boxwidth,boxheight);*/
 			AffineTransform tx = AffineTransform.getRotateInstance(angle, width/2, height/2);
 			tx.scale((dna.getSize()+9)/10,(dna.getSize()+9)/10);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);

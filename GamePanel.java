@@ -100,8 +100,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	public static void setLevel(int lv){
 		if(lv == 0){
 			menu = new Menu();
-			godLevel = new GodLevel();
 			level = null;
+			godLevel = null;
 		}
 		else if(lv == 1){
 			level = new Level();

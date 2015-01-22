@@ -1,24 +1,14 @@
 import java.awt.*;
 import java.util.ArrayList;
-public class Level{
-	private Map map;
+public class Level extends Levels{
 	private Player p;
-	private ArrayList<Enemy> e;
-	private ArrayList<Berry> berries;
-	private ArrayList<Rock> rocks;
-	private AudioPlayer bgm;
-	private IconButton pause;
-	private boolean paused = false;
 	private Button quit;
 	private Button returner;
 	private boolean dead = false;
-	public static int WIDTH, HEIGHT;
-	private long  timer, elapsed;
+	private long timer, elapsed;
 	private int time = 0;
 	public Level(){
-		map = new Map("gamebg.jpg");
-		WIDTH = map.getWidth();
-		HEIGHT = map.getHeight();
+		super("gamebg.jpg");
 		returner = new Button((GamePanel.WIDTH/2-100),400,200,50,"Return to Menu");
 		p = new Player(map,50,50,8);
 		e = new ArrayList<Enemy>();
@@ -164,12 +154,6 @@ public class Level{
 		if(Math.random()*5 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2)));
 		else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2+3)));
 		else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(Math.random()*(p.getDNA().getSize()))+1));
-	}
-	private boolean stuck(double newx,double newy){
-		for(int i=0;i<rocks.size();i++)
-			if(rocks.get(i).checkStuck(newx, newy))
-				return true;
-		return false;
 	}
 	public void mouse(int mx,int my){
 		p.mouse(mx,my);

@@ -17,10 +17,10 @@ public class Player extends Organism{
 
 		x += speed*Math.cos(angle);
 		if(x<width/2) x = width/2;
-		if(x>Level.WIDTH-width/2) x = Level.WIDTH-width/2;
+		if(x>Levels.WIDTH-width/2) x = Levels.WIDTH-width/2;
 		y += speed*Math.sin(angle);
 		if(y<height/2) y = height/2;
-		if(y>Level.HEIGHT-height/2) y = Level.HEIGHT-height/2;
+		if(y>Levels.HEIGHT-height/2) y = Levels.HEIGHT-height/2;
 
 		attacking = false;
 	}
