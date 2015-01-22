@@ -29,13 +29,14 @@ public class GodLevel extends Levels{
 	    rocks = new ArrayList<Rock>();
 		enemyLevel = 1;
 		enemySpecies = 0;
+		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
 		pause = new IconButton(10,10,"pause.png");
 		bgm = new AudioPlayer("intro.mp3");
 		bgm.loop();
 	}
 	public void update(){
-		map.setPos(mx,my);
 		if(!paused){
+			map.setPos(mx,my);
 			for(int i=0;i<e.size();i++){
 				Enemy en = e.get(i);
 				en.update();
@@ -90,6 +91,16 @@ public class GodLevel extends Levels{
 		for(int i=0;i<rocks.size();i++) (rocks.get(i)).draw(g);
 		for(int i=0;i<btns.length;i++) btns[i].draw(g);
 		pause.draw(g);
+		if(paused){
+			g.setColor(Color.cyan);
+			g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
+			g.setColor(Color.black);
+			g.fillRect(300, 100, GamePanel.WIDTH-600, GamePanel.HEIGHT-300);
+			g.setColor(Color.white);
+			g.setFont(new Font("Tahoma",Font.PLAIN,50));
+			g.drawString("Paused", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Paused"))/2, 250);
+			quit.draw(g);
+		}
 	}
 	public void mouse(int mx,int my){
 		this.mx = mx;
@@ -101,43 +112,50 @@ public class GodLevel extends Levels{
 			paused = !paused;
 			buttonActivated = true;
 		}
-		for(int i=0;i<btns.length;i++){
-			if(btns[i].click(mx,my)){
-				buttonActivated = true;
-				switch(i){
-				case 3:
-					enemySpecies+=4;
-					enemySpecies%=5;
-					break;
-				case 4:
-					enemySpecies++;
-					enemySpecies%=5;
-					break;
-				case 5:
-					enemyLevel++;
-					enemyLevel%=100;
-					break;
-				case 6:
-					enemyLevel+=99;
-					enemyLevel%=100;
-					break;
-				default: 
-					cursorType = i;
-					break;
-				}
+		if(paused){
+			if(quit.click(mx,my)){
+				GamePanel.setLevel(0);
 			}
 		}
-		if(!buttonActivated)
-			switch(cursorType){
-			case 0:
-				rocks.add(new Rock(map,mx+map.getX(),my+map.getY()));
-				break;
-			case 1:
-				berries.add(new Berry(map,mx+map.getX(),my+map.getY()));
-				break;
-			case 2:
-				e.add(new Enemy(map,mx+map.getX(),my+map.getY(),enemySpecies,enemyLevel));
-				break;
+		else{
+			for(int i=0;i<btns.length;i++){
+				if(btns[i].click(mx,my)){
+					buttonActivated = true;
+					switch(i){
+					case 3:
+						enemySpecies+=4;
+						enemySpecies%=5;
+						break;
+					case 4:
+						enemySpecies++;
+						enemySpecies%=5;
+						break;
+					case 5:
+						enemyLevel++;
+						enemyLevel%=100;
+						break;
+					case 6:
+						enemyLevel+=99;
+						enemyLevel%=100;
+						break;
+					default: 
+						cursorType = i;
+						break;
+					}
+				}
 			}
+			if(!buttonActivated)
+				switch(cursorType){
+				case 0:
+					rocks.add(new Rock(map,mx+map.getX(),my+map.getY()));
+					break;
+				case 1:
+					berries.add(new Berry(map,mx+map.getX(),my+map.getY()));
+					break;
+				case 2:
+					e.add(new Enemy(map,mx+map.getX(),my+map.getY(),enemySpecies,enemyLevel));
+					break;
+				}
+		}
 	}
 }

@@ -9,6 +9,7 @@ public abstract class Levels{
 	protected ArrayList<Rock> rocks;
 	protected IconButton pause;
 	protected boolean paused = false;
+	protected Button quit;
 	protected AudioPlayer bgm;
 	public Levels(String str){
 		map = new Map(str);

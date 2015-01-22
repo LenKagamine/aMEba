@@ -2,7 +2,6 @@ import java.awt.*;
 import java.util.ArrayList;
 public class Level extends Levels{
 	private Player p;
-	private Button quit;
 	private Button returner;
 	private boolean dead = false;
 	private long timer, elapsed;
