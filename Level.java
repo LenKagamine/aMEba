@@ -183,6 +183,9 @@ public class Level{
 				dead = true;
 			}
 		}
-		if(dead && returner.click(mx,my)) GamePanel.setLevel(0);
+		if(dead && returner.click(mx,my)){
+			bgm.stop();
+			GamePanel.setLevel(0);
+		}
 	}
 }
