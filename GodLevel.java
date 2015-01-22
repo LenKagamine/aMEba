@@ -13,7 +13,7 @@ public class GodLevel extends Levels{
  private boolean unsavedFile = true;
  public GodLevel(){
   super("gamebg.jpg");
-  btns = new Button[]{
+  btns = new Button[]{ // Create the buttons
       new Button(GamePanel.WIDTH*1/9,50,100,50,"Rock"),
       new Button(GamePanel.WIDTH*2/9,50,100,50,"Berry"),
       new Button(GamePanel.WIDTH*3/9,50,100,50,"Enemy"),
@@ -235,12 +235,10 @@ public class GodLevel extends Levels{
       PrintWriter fileout = new PrintWriter (new FileWriter (file.getName()));
       for (int r = 0; r < rocks.size(); r++)
         fileout.println(rocks.get(r).getPos().getX() + "," + rocks.get(r).getPos().getY());
-      fileout.println("break");
-      for (int r = 0; r < berries.size(); r++)
-        fileout.println(berries.get(r).getPos().getX() + "," + berries.get(r).getPos().getY());
-      fileout.println("break");
+      fileout.println("=");
       for (int r = 0; r < e.size(); r++)
-        fileout.println(e.get(r).getPos().getX() + "," + e.get(r).getPos().getY() + ";" + e.get(r).getSpecies() + ":" + 1);
+        fileout.println(e.get(r).getPos().getX() + "," + e.get(r).getPos().getY() + ";" + e.get(r).getSpecies() + ":" + e.get(r).getDNA().getSize());
+      fileout.println("=");
       fileout.println();
       fileout.close ();
     }
@@ -251,7 +249,6 @@ public class GodLevel extends Levels{
       file = fc.getSelectedFile();
       unsavedFile = false;
       rocks.clear();
-      berries.clear();
       e.clear();
       double x,y;
       int species,level;
@@ -261,7 +258,7 @@ public class GodLevel extends Levels{
     String line;
     while ((line = filein.readLine ()) != null){ // file has not ended
       for (int i = 0; i < line.length(); i++){
-        if(line.equals("break"))
+        if(line.indexOf('=') != -1)
           section++;
         else if (section == 0){
           div1 = line.indexOf(',');
@@ -271,20 +268,16 @@ public class GodLevel extends Levels{
         }
         else if (section == 1){
           div1 = line.indexOf(',');
-          x = Double.parseDouble(line.substring(0,div1));
-          y = Double.parseDouble(line.substring(div1+1,line.length()));
-          berries.add(new Berry (map, x, y));
-        }
-        else if (section == 2){
-          div1 = line.indexOf(',');
           div2 = line.indexOf(';');
           div3 = line.indexOf(':');
           x = Double.parseDouble(line.substring(0,div1));
           y = Double.parseDouble(line.substring(div1+1,div2));
           species = Integer.parseInt(line.substring(div2+1,div3));
-          level = Integer.parseInt(line.substring(div3+1,line.length()));
-          rocks.add(new Rock (map, x, y));
+          level = (int) Double.parseDouble(line.substring(div3+1,line.length()));
+          e.add(new Enemy (map, x, y, species, level));
         }
+        else
+          break;
       }
     }
     filein.close ();
