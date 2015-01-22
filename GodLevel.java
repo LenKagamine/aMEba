@@ -6,9 +6,9 @@ public class GodLevel{
   private boolean buttonActivated;
   private int cursorType;
   private int enemyLevel, enemySpecies;
-  private ArrayList e;
-  private ArrayList berries;
-  private ArrayList rocks;
+ private ArrayList<Enemy> e;
+ private ArrayList<Berry> berries;
+ private ArrayList<Rock> rocks;
   private double mx, my;
   private IconButton pause;
   private boolean paused = false;
@@ -20,7 +20,9 @@ public class GodLevel{
     btns = new Button[]{
       new Button(GamePanel.WIDTH/10,50,100,50,"Rock"),
       new Button(GamePanel.WIDTH*2/10,50,100,50,"Berry"),
-      new Button(GamePanel.WIDTH*3/10,50,100,50,"Enemy")
+      new Button(GamePanel.WIDTH*3/10,50,100,50,"Enemy"),
+      new Button(GamePanel.WIDTH*4/10,50,50,50,"<"),
+      new Button(GamePanel.WIDTH*4/10+50,50,50,50,">")
     };
     cursorType = -1;
     /*cursorType governs what is selected
@@ -31,16 +33,16 @@ public class GodLevel{
      */
     enemyLevel = 1;
     enemySpecies = 0;
-    e = new ArrayList();
-    berries = new ArrayList();
-    rocks = new ArrayList();
+    e = new ArrayList<Enemy>();
+    berries = new ArrayList<Berry>();
+    rocks = new ArrayList<Rock>();
     pause = new IconButton(10,10,"pause.png");
   }
   public void update(){
     map.setPos(mx,my);
     if(!paused)
       for(int i=0;i<e.size();i++){
-      Enemy en = (Enemy)e.get(i);
+      Enemy en = e.get(i);
       en.update();
       en.setFollow(false);
       if(en.isDead()){
@@ -48,11 +50,11 @@ public class GodLevel{
       }
       else{
         for(int j=0;j<rocks.size();j++){
-          if (en.getBoxRect().intersects(((Rock)rocks.get(j)).getBoxRect()))
+          if (en.getBoxRect().intersects(rocks.get(j).getBoxRect()))
             en.collide();
         }
         for(int j=0;j<e.size();j++){ //enemies attack each other
-          Enemy en2 = (Enemy)e.get(j);
+          Enemy en2 = e.get(j);
           if(en.getSpecies() != en2.getSpecies()){ //different species
             if(en.insight(en2.getScreenPos())){ //enemy sees other enemy
               en.setTarget(en2.getScreenPos());
@@ -73,12 +75,12 @@ public class GodLevel{
           }
         }
         for(int j=0;j<berries.size();j++){
-          if(((Berry)berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
-            en.consume((Berry)berries.get(j));
+          if((berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
+            en.consume(berries.get(j));
             berries.remove(j);
           }
-          else if(en.insight(((Berry)berries.get(j)).getScreenPos())){ //enemy sees berry
-            en.setTarget(((Berry)berries.get(j)).getScreenPos());
+          else if(en.insight((berries.get(j)).getScreenPos())){ //enemy sees berry
+            en.setTarget((berries.get(j)).getScreenPos());
             en.setFollow(true);
           }
         }
@@ -87,15 +89,15 @@ public class GodLevel{
   }
   public void draw(Graphics2D g){
     map.draw(g);
-    for(int i=0;i<e.size();i++) ((Enemy)e.get(i)).draw(g);
-    for(int i=0;i<berries.size();i++) ((Berry)berries.get(i)).draw(g);
-    for(int i=0;i<rocks.size();i++) ((Rock)rocks.get(i)).draw(g);
+    for(int i=0;i<e.size();i++) e.get(i).draw(g);
+    for(int i=0;i<berries.size();i++) (berries.get(i)).draw(g);
+    for(int i=0;i<rocks.size();i++) (rocks.get(i)).draw(g);
     for(int i=0;i<btns.length;i++) btns[i].draw(g);
     pause.draw(g);
   }
   private boolean stuck(double newx,double newy){
     for(int i=0;i<rocks.size();i++)
-      if(((Rock)rocks.get(i)).checkStuck(newx, newy))
+      if((rocks.get(i)).checkStuck(newx, newy))
       return true;
     return false;
   }
@@ -113,6 +115,14 @@ public class GodLevel{
       if(btns[i].click(mx,my)){
         buttonActivated = true;
         switch(i){
+          case 3:
+            enemySpecies--;
+            enemySpecies%=5;
+            break;
+          case 4:
+            enemySpecies++;
+            enemySpecies%=5;
+            break;
           default: 
             cursorType = i;
             break;
