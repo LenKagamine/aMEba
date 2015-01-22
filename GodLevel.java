@@ -87,7 +87,7 @@ public class GodLevel extends Levels{
      for(int j=0;j<berries.size();j++){
       if((berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
        en.consume(berries.get(j));
-       if (Math.random()*5<=1) lvl.spawnEnemy(getSpecies());//mating
+       if (Math.random()*5<=1) spawnEnemy(en.getSpecies());//mating
        berries.remove(j);
       }
       else if(en.insight((berries.get(j)).getScreenPos())){ //enemy sees berry
@@ -256,9 +256,8 @@ public class GodLevel extends Levels{
       int div1, div2, div3;
       int section = 0;
       BufferedReader filein = new BufferedReader (new FileReader (file.getName()));
-    String line;
-    while ((line = filein.readLine ()) != null){ // file has not ended
-      for (int i = 0; i < line.length(); i++){
+      String line;
+      while ((line = filein.readLine ()) != null){ // file has not ended
         if(line.indexOf('=') != -1)
           section++;
         else if (section == 0){
@@ -280,8 +279,7 @@ public class GodLevel extends Levels{
         else
           break;
       }
-    }
-    filein.close ();
+      filein.close ();
     }
   }
 }
