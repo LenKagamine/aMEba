@@ -68,6 +68,11 @@ public class GodLevel extends Levels{
         if(en2.isDead()){ //enemy eat enemy
          en.consume(en2.getDNA());
          e.remove(j);
+         for (int v = 0; v< 2;v++)
+                                        if (Math.random()*5 <= 1)
+                                        {
+                                            spawnEnemy(en.getSpecies());
+                                        }
         }
        }
        else{
@@ -81,7 +86,7 @@ public class GodLevel extends Levels{
      }
      for(int j=0;j<berries.size();j++){
       if((berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
-       en.consume(berries.get(j));
+       en.consume(berries.get(j), this);
        berries.remove(j);
       }
       else if(en.insight((berries.get(j)).getScreenPos())){ //enemy sees berry
@@ -93,6 +98,28 @@ public class GodLevel extends Levels{
    }
   }
  }
+ public void spawnEnemy(int num){
+        boolean stuck = true;
+        double newx = 100;
+        double newy = 100;
+        if (e.size() <= 150)
+        {
+            while (stuck)
+            {
+                stuck = false;
+                newx = Math.random()*(Level.WIDTH-200)+100;
+                newy = Math.random()*(Level.HEIGHT-200)+100;
+                for (int i = 0; i< rocks.size(); i++)
+                {
+                    if (((Rock)(rocks.get(i))).checkStuck(newx, newy))
+                        stuck = true;
+                }
+            }
+            e.add(new Enemy(map,newx,newy,num,1));
+            ((Enemy)(e.get(e.size()-1))).setHealth();
+            //Enemy en = (Enemy)(e.get(e.size()-1));
+        }
+    }
  public void draw(Graphics2D g){
   map.draw(g);
   for(int i=0;i<e.size();i++) e.get(i).draw(g);
