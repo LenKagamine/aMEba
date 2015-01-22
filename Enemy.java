@@ -37,16 +37,16 @@ public class Enemy extends Organism{
 	}
 	public void draw(Graphics2D g){
 		/*int[] viewxi = new int[3],viewyi = new int[3];
-	for(int i=0;i<3;i++){
-	    viewxi[i] = (int)viewx[i];
-	    viewyi[i] = (int)viewy[i];
-	}
-	if(inview){
-	    g.setColor(Color.green);
-	    g.fillPolygon(viewxi,viewyi,3);
-	}
-	g.setColor(Color.black);
-	g.drawPolygon(viewxi,viewyi,3);*/
+		for(int i=0;i<3;i++){
+		    viewxi[i] = (int)viewx[i];
+		    viewyi[i] = (int)viewy[i];
+		}
+		if(inview){
+		    g.setColor(Color.green);
+		    g.fillPolygon(viewxi,viewyi,3);
+		}
+		g.setColor(Color.black);
+		g.drawPolygon(viewxi,viewyi,3);*/
 		super.draw(g);
 		g.setColor(Color.black);
 		g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),width,5);

@@ -6,8 +6,8 @@ public class Level{
 	private ArrayList<Enemy> e;
 	private ArrayList<Berry> berries;
 	private ArrayList<Rock> rocks;
+	private AudioPlayer bgm;
 	private IconButton pause;
-	
 	private boolean paused = false;
 	private Button quit;
 	private Button returner;
@@ -26,6 +26,8 @@ public class Level{
 		rocks = new ArrayList<Rock>();
 		for(int i=0;i<25;i++) spawnEnemy();
 		for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
+		bgm = new AudioPlayer("intro.mp3");
+		bgm.loop();
 		pause = new IconButton(10,10,"pause.png");
 		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
 		timer = System.currentTimeMillis();
