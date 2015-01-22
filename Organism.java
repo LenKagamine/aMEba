@@ -66,7 +66,7 @@ public abstract class Organism extends MapObject{
 		}
 	}
 	public void hit(double dmg){
-		health = Math.max(health-dmg,0);
+		health = Math.max(health-dmg+getDNA().getDefense(),0);
 	}
 	public int getSpecies(){
 		return species;

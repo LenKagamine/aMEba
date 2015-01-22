@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 	//Thread
 	private Thread thread;
 	private boolean running;
-	private int FPS = 120;
+	private int FPS = 60;
 	private long targetTime = 1000/FPS;
 	//Image/Drawing
 	private BufferedImage image;

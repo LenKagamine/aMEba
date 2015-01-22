@@ -4,7 +4,6 @@ public class Enemy extends Organism{
 	private double[] viewx = new double[3],viewy = new double[3];
 	private boolean inview = false;
 	private int species = 5;
-	private int cooldown = 200;
 	private long atkstart,hitstart,elapsed;
 	private double targetx,targety;
 	private double prevx, prevy;
@@ -72,11 +71,10 @@ public class Enemy extends Organism{
 		return inview;
 	}
 	public void attack(Organism org){
-		if(inview && elapsed-atkstart>cooldown){
+		if(elapsed-atkstart>100){
 			atkstart = System.currentTimeMillis();
 			if(getBoxRect().intersects(org.getBoxRect())){
-				double damage = dna.getAttack() - org.getDNA().getDefense();
-				if(damage >= 0) org.hit(damage);
+				org.hit(dna.getAttack());
 			}
 		}
 	}
