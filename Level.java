@@ -9,13 +9,13 @@ public class Level extends Levels{
 	public Level(){
 		super("gamebg.jpg");
 		returner = new Button((GamePanel.WIDTH/2-100),400,200,50,"Return to Menu");
-		p = new Player(map,50,50,8);
-		e = new ArrayList<Enemy>();
-		berries = new ArrayList<Berry>();
+		p = new Player(map,50,50,8); //player character
+		e = new ArrayList<Enemy>(); //various arraylists to store things
+		berries = new ArrayList<Berry>(); 
 		rocks = new ArrayList<Rock>();
 		for(int i=0;i<25;i++) spawnEnemy();
 		for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
-		bgm = new AudioPlayer("intro.mp3");
+		bgm = new AudioPlayer("intro.mp3"); //music :)
 		bgm.loop();
 		pause = new IconButton(10,10,"pause.png");
 		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
@@ -36,7 +36,7 @@ public class Level extends Levels{
 				}
 				else{
 					for(int j=0;j<rocks.size();j++){ //enemy hit rock
-						if(en.getBoxRect().intersects(rocks.get(j).getBoxRect()))
+						if(en.getBoxRect().intersects(rocks.get(j).getBoxRect())) //checks for rock collision
 							en.collide();
 					}
 					if(en.insight(p.getScreenPos())){ //enemy follows player
@@ -110,7 +110,7 @@ public class Level extends Levels{
 			}
 		}
 	}
-	public void restart(Graphics2D g){
+	public void restart(Graphics2D g){ //draws screen
 		g.setColor(Color.red);
 		g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
 		g.setColor(Color.black);
@@ -121,7 +121,7 @@ public class Level extends Levels{
 		g.setFont(new Font("Tahoma",Font.PLAIN,48));
 		g.drawString("Score: " + time, (GamePanel.WIDTH-g.getFontMetrics().stringWidth(" Score: " + time))/2, 350);
 	}
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g){ //draws all
 		map.draw(g);
 		for(int i=0;i<e.size();i++) e.get(i).draw(g);
 		for(int i=0;i<berries.size();i++) berries.get(i).draw(g);
@@ -138,15 +138,15 @@ public class Level extends Levels{
 			g.drawString("Paused", (GamePanel.WIDTH-g.getFontMetrics().stringWidth("Paused"))/2, 250);
 			quit.draw(g);
 		}
-		else if(dead){
+		else if(dead){ //if dead, draw death screen
 			restart(g);
 			returner.draw(g);
 		}
 	}
-	public void spawnEnemy(){
+	public void spawnEnemy(){ //spawns enemy
 		double newx = Math.random()*(Level.WIDTH-200)+100;
 		double newy = Math.random()*(Level.HEIGHT-200)+100;
-		while(stuck(newx,newy)){
+		while(stuck(newx,newy)){ //prevent enemy from spawning in rock
 			newx = Math.random()*(Level.WIDTH-200)+100;
 			newy = Math.random()*(Level.HEIGHT-200)+100;
 		}
@@ -157,16 +157,16 @@ public class Level extends Levels{
 	public void mouse(int mx,int my){
 		p.mouse(mx,my);
 	}
-	public void click(int mx,int my){
+	public void click(int mx,int my){ 
 		p.click(mx,my);
-		if(pause.click(mx,my)) paused = !paused;
+		if(pause.click(mx,my)) paused = !paused; //pauses/unpauses
 		if(paused){
 			if(quit.click(mx,my)){
 				paused = false;
 				dead = true;
 			}
 		}
-		if(dead && returner.click(mx,my)){
+		if(dead && returner.click(mx,my)){//return to menu
 			bgm.stop();
 			GamePanel.setLevel(0);
 		}
