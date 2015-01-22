@@ -86,7 +86,8 @@ public class GodLevel extends Levels{
      }
      for(int j=0;j<berries.size();j++){
       if((berries.get(j)).getRect().intersects(en.getBoxRect())){ //enemy eat berry
-       en.consume(berries.get(j), this);
+       en.consume(berries.get(j));
+       if (Math.random()*5<=1) lvl.spawnEnemy(getSpecies());//mating
        berries.remove(j);
       }
       else if(en.insight((berries.get(j)).getScreenPos())){ //enemy sees berry
