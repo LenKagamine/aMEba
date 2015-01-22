@@ -19,13 +19,13 @@ public class GodLevel{
     WIDTH = map.getWidth();
     HEIGHT = map.getHeight();
     btns = new Button[]{
-      new Button(GamePanel.WIDTH/10,50,100,50,"Rock"),
-      new Button(GamePanel.WIDTH*2/10,50,100,50,"Berry"),
-      new Button(GamePanel.WIDTH*3/10,50,100,50,"Enemy"),
-      new Button(GamePanel.WIDTH*4/10,50,50,50,"<"),
-      new Button(GamePanel.WIDTH*4/10+50,50,50,50,">"),
-      new Button(GamePanel.WIDTH*5/10,50,100,25,"level up"),
-      new Button(GamePanel.WIDTH*5/10,75,100,25,"level down")
+      new Button(GamePanel.WIDTH/8,50,100,50,"Rock"),
+      new Button(GamePanel.WIDTH*2/8,50,100,50,"Berry"),
+      new Button(GamePanel.WIDTH*3/8,50,100,50,"Enemy"),
+      new Button(GamePanel.WIDTH*4/8,50,50,50,"<"),
+      new Button(GamePanel.WIDTH*4/8+50,50,50,50,">"),
+      new Button(GamePanel.WIDTH*5/8,50,100,25,"level up"),
+      new Button(GamePanel.WIDTH*5/8,75,100,25,"level down")
     };
     cursorType = -1;
     /*cursorType governs what is selected
