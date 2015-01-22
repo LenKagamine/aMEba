@@ -114,6 +114,7 @@ public class GodLevel extends Levels{
 		}
 		if(paused){
 			if(quit.click(mx,my)){
+				bgm.stop();
 				GamePanel.setLevel(0);
 			}
 		}
