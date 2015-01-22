@@ -149,7 +149,12 @@ public class GodLevel extends Levels{
          enemyLevel%=100;
          break;
        case 7:
-         enemyLevel+=99;
+         try {
+         saveFile();
+       }
+         catch (IOException ioe){
+           System.out.println("Couldn't save file");
+         }
          break;
        case 8:
          try {
@@ -160,7 +165,12 @@ public class GodLevel extends Levels{
          }
          break;
        case 9:
-         enemyLevel+=99;
+         try {
+         openFile();
+       }
+         catch (IOException ioe){
+           System.out.println("Couldn't save file");
+         }
          break;
        default: 
       cursorType = i;
@@ -196,6 +206,14 @@ public class GodLevel extends Levels{
     }
     else{
       PrintWriter fileout = new PrintWriter (new FileWriter (file.getName()));
+      for (int r = 0; r < rocks.size(); r++)
+        fileout.println(rocks.get(r).getPos().getX() + "," + rocks.get(r).getPos().getY());
+      fileout.println("break");
+      for (int r = 0; r < berries.size(); r++)
+        fileout.println(berries.get(r).getPos().getX() + "," + berries.get(r).getPos().getY());
+      fileout.println("break");
+      for (int r = 0; r < e.size(); r++)
+        fileout.println(e.get(r).getPos().getX() + "," + e.get(r).getPos().getY() + ";" + e.get(r).getSpecies() + ":" + 1);
       fileout.println();
       fileout.close ();
     }
@@ -205,6 +223,44 @@ public class GodLevel extends Levels{
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       file = fc.getSelectedFile();
       unsavedFile = false;
+      rocks.clear();
+      berries.clear();
+      e.clear();
+      double x,y;
+      int species,level;
+      int div1, div2, div3;
+      int section = 0;
+      BufferedReader filein = new BufferedReader (new FileReader (file.getName()));
+    String line;
+    while ((line = filein.readLine ()) != null){ // file has not ended
+      for (int i = 0; i < line.length(); i++){
+        if(line.equals("break"))
+          section++;
+        else if (section == 0){
+          div1 = line.indexOf(',');
+          x = Double.parseDouble(line.substring(0,div1));
+          y = Double.parseDouble(line.substring(div1+1,line.length()));
+          rocks.add(new Rock (map, x, y));
+        }
+        else if (section == 1){
+          div1 = line.indexOf(',');
+          x = Double.parseDouble(line.substring(0,div1));
+          y = Double.parseDouble(line.substring(div1+1,line.length()));
+          berries.add(new Berry (map, x, y));
+        }
+        else if (section == 2){
+          div1 = line.indexOf(',');
+          div2 = line.indexOf(';');
+          div3 = line.indexOf(':');
+          x = Double.parseDouble(line.substring(0,div1));
+          y = Double.parseDouble(line.substring(div1+1,div2));
+          species = Integer.parseInt(line.substring(div2+1,div3));
+          level = Integer.parseInt(line.substring(div3+1,line.length()));
+          rocks.add(new Rock (map, x, y));
+        }
+      }
+    }
+    filein.close ();
     }
   }
 }
