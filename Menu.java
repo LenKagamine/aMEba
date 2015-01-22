@@ -1,36 +1,36 @@
 import java.awt.*;
 public class Menu extends Levels{
-	private int mx,my;
-	private Button[] btns;
+	private int mx,my; //Mouse clicks
+	private Button[] btns; //Buttons
 	private Button back;
-	private boolean inst;
+	private boolean inst; //Instructions
 	private Color titleColor;
-	private Font titleFont,medFont,smallFont;
+	private Font titleFont,medFont,smallFont; //Fonts
 	public Menu(){
-		super("menubg.png");
-		titleColor = new Color(0,204,204);
+		super("menubg.png"); //Set map
+		titleColor = new Color(0,204,204); //Colors and font
 		titleFont = new Font("Arial",Font.PLAIN,40);
 		medFont = new Font("Arial",Font.PLAIN,25);
 		smallFont = new Font("Arial",Font.PLAIN,15);
-		btns = new Button[]{
+		btns = new Button[]{ //Buttons
 				new Button(GamePanel.WIDTH/2-80,350,160,50,"Play"),
 				new Button(GamePanel.WIDTH/2-80,410,160,50,"God Mode"),
 				new Button(GamePanel.WIDTH/2-80,470,160,50,"Instructions"),
 				new Button(GamePanel.WIDTH/2-80,530,160,50,"Exit")
 		};
-		back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT-120,100,50,"Back");
+		back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Back"); //Back button for instructions
 		inst = false;
-		bgm = new AudioPlayer("menubgm.mp3");
+		bgm = new AudioPlayer("menubgm.mp3"); //Music
 		bgm.loop();
 	}
 
 	public void update(){
-		map.setPos(mx,my);
+		map.setPos(mx,my); //Scroll map
 	}
 
 	public void draw(Graphics2D g){
-		map.draw(g);
-		if(inst){
+		map.draw(g); //Draw background
+		if(inst){ //Draw instructions
 			int midwidth = GamePanel.WIDTH/2, midheight = GamePanel.HEIGHT/2;
 			g.setColor(Color.gray);
 			g.fillRoundRect(midwidth-400,midheight-300,800,600,50,50);
@@ -57,36 +57,36 @@ public class Menu extends Levels{
 			g.drawString("to spawn things. Scroll by moving the mouse cursor to the edge of the screen",midwidth-380,midheight+170);
 			back.draw(g);
 		}
-		else{
+		else{ //Draw menu screen
 			g.setColor(titleColor);
 			g.setFont(titleFont);
-			g.drawString("aMEba",(GamePanel.WIDTH-g.getFontMetrics().stringWidth("aMEba"))/2,150);
-			for(int i=0;i<btns.length;i++) btns[i].draw(g);
+			g.drawString("aMEba",(GamePanel.WIDTH-g.getFontMetrics().stringWidth("aMEba"))/2,150); //Title
+			for(int i=0;i<btns.length;i++) btns[i].draw(g); //Buttons
 		}
 	}
 	public void click(int mx,int my){
 		if(inst){
-			if(back.click(mx,my)) inst = false;
+			if(back.click(mx,my)) inst = false; //Back button click
 		}
 		else{
 			for(int i=0;i<btns.length;i++){
 				if(btns[i].click(mx,my)){
-					if(i == 0){
+					if(i == 0){ //Play button
 						bgm.stop();
 						GamePanel.setLevel(1);
 					}
-					else if(i == 1){
+					else if(i == 1){ //God Mode play button
 						bgm.stop();
 						GamePanel.setLevel(2);
 					}
-					else if(i == 2) inst = true;
-					else if(i == 3) System.exit(1);
+					else if(i == 2) inst = true; //Show instruction button
+					else if(i == 3) System.exit(1); //Exit button
 				}
 			}
 		}
 	}
 
-	public void mouse(int mx,int my){
+	public void mouse(int mx,int my){ //Get mouse movements
 		this.mx = mx;
 		this.my = my;
 	}
