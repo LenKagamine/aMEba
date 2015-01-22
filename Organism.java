@@ -92,9 +92,4 @@ public abstract class Organism extends MapObject{
 		health += berry.recoverHealth();
 		if(this.health >= dna.getHealth()) this.health = dna.getHealth();
 	}
-	public void consume(Berry berry, GodLevel lvl){
-		health += berry.recoverHealth();
-		if(this.health >= dna.getHealth()) this.health = dna.getHealth();
-		if (Math.random()*5<=1) lvl.spawnEnemy(getSpecies());
-	}
 }
