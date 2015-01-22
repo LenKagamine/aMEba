@@ -1,6 +1,5 @@
 import java.awt.*;
-public class Menu{
-	private Map map;
+public class Menu extends Levels{
 	private int mx,my;
 	private Button[] btns;
 	private Button back;
@@ -8,7 +7,7 @@ public class Menu{
 	private Color titleColor;
 	private Font titleFont,medFont,smallFont;
 	public Menu(){
-		map = new Map("menubg.png");
+		super("menubg.png");
 		titleColor = new Color(0,204,204);
 		titleFont = new Font("Arial",Font.PLAIN,40);
 		medFont = new Font("Arial",Font.PLAIN,25);
@@ -21,6 +20,8 @@ public class Menu{
 		};
 		back = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT-120,100,50,"Back");
 		inst = false;
+		bgm = new AudioPlayer("menubgm.mp3");
+		bgm.loop();
 	}
 
 	public void update(){
@@ -70,8 +71,14 @@ public class Menu{
 		else{
 			for(int i=0;i<btns.length;i++){
 				if(btns[i].click(mx,my)){
-					if(i == 0) GamePanel.setLevel(1);
-					else if(i == 1) GamePanel.setLevel(2);
+					if(i == 0){
+						bgm.stop();
+						GamePanel.setLevel(1);
+					}
+					else if(i == 1){
+						bgm.stop();
+						GamePanel.setLevel(2);
+					}
 					else if(i == 2) inst = true;
 					else if(i == 3) System.exit(1);
 				}
