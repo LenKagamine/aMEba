@@ -44,6 +44,7 @@ public class GodLevel extends Levels{
  }
  public void update(){
   if(!paused){
+   if(Math.random()*20>berries.size()) berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100)); //berries
    map.setPos(mx,my);
    for(int i=0;i<e.size();i++){
     Enemy en = e.get(i);
