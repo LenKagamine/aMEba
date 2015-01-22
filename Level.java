@@ -15,7 +15,7 @@ public class Level extends Levels{
 		rocks = new ArrayList<Rock>();
 		for(int i=0;i<25;i++) spawnEnemy();
 		for(int i=0;i<50;i++) rocks.add(new Rock(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100));
-		bgm = new AudioPlayer("intro.mp3"); //music :)
+		bgm = new AudioPlayer("gamebgm.mp3"); //music :)
 		bgm.loop();
 		pause = new IconButton(10,10,"pause.png");
 		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
@@ -95,9 +95,9 @@ public class Level extends Levels{
 			p.update();
 			if(p.getHealth()<=0) dead = true;
 			else if(elapsed - timer >= 200){
-                time++;
-                timer = System.currentTimeMillis();
-            }
+				time++;
+				timer = System.currentTimeMillis();
+			}
 			for(int j=0;j<berries.size();j++){ //player eat berry
 				if(berries.get(j).getRect().intersects(p.getBoxRect())){
 					p.consume(berries.get(j));
