@@ -1,4 +1,5 @@
 import java.awt.*;
+
 public class Menu extends Levels{
 	private int mx,my; //Mouse clicks
 	private Button[] btns; //Buttons
@@ -6,6 +7,7 @@ public class Menu extends Levels{
 	private boolean inst; //Instructions
 	private Color titleColor;
 	private Font titleFont,medFont,smallFont; //Fonts
+	
 	public Menu(){
 		super("menubg.png"); //Set map
 		titleColor = new Color(0,204,204); //Colors and font
@@ -64,6 +66,7 @@ public class Menu extends Levels{
 			for(int i=0;i<btns.length;i++) btns[i].draw(g); //Buttons
 		}
 	}
+	
 	public void click(int mx,int my){
 		if(inst){
 			if(back.click(mx,my)) inst = false; //Back button click

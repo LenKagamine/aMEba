@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
+
 public class Enemy extends Organism{
 	private double[] viewx = new double[3],viewy = new double[3];
 	private boolean inview = false;
@@ -7,6 +8,7 @@ public class Enemy extends Organism{
 	private long atkstart,hitstart,elapsed; //these make it so that enemies have attack cooldown so they don't always attack
 	private double targetx,targety;
 	private double prevx, prevy;
+	
 	public Enemy(Map map,double x,double y,int species,int level){
 		super(map,x,y,species,level);
 		atkstart = System.currentTimeMillis();
@@ -14,6 +16,7 @@ public class Enemy extends Organism{
 		prevx = 100; 
 		prevy = 100;
 	}
+	
 	public void update(){
 		super.update();
 		prevx = x;//keeps prev position
@@ -35,6 +38,7 @@ public class Enemy extends Organism{
 		y += speed*Math.sin(angle);
 		if(x<width/2||x>Levels.WIDTH-width/2||y<height/2||y>Levels.HEIGHT-height/2) angle++; //wiggles path
 	}
+	
 	public void draw(Graphics2D g){ //draws enemy
 		super.draw(g);
 		g.setColor(Color.black);
@@ -42,6 +46,7 @@ public class Enemy extends Organism{
 		g.setColor(Color.red);
 		g.fillRect((int)(x-mapx-width/2),(int)(y-mapy+height/2),(int)(1.0*health/dna.getHealth()*width),5);
 	}
+	
 	public boolean insight(Point2D point){ //finds if enemy sees point
 		double alpha = ((viewy[1] - viewy[2])*(point.getX() - viewx[2]) + (viewx[2] - viewx[1])*(point.getY() - viewy[2])) /
 				((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2])),
@@ -49,16 +54,20 @@ public class Enemy extends Organism{
 				((viewy[1] - viewy[2])*(viewx[0] - viewx[2]) + (viewx[2] - viewx[1])*(viewy[0] - viewy[2]));
 		return (alpha>0)&&(beta>0)&&(alpha+beta<1);
 	}
+	
 	public void setTarget(Point2D point){ //sets new target
 		targetx = point.getX();
 		targety = point.getY();
 	}
+	
 	public void setFollow(boolean follow){
 		inview = follow;
 	}
+	
 	public boolean following(){
 		return inview;
 	}
+	
 	public void attack(Organism org){ //attacks if not on cooldown
 		if(elapsed-atkstart>100){
 			atkstart = System.currentTimeMillis();
@@ -67,17 +76,20 @@ public class Enemy extends Organism{
 			}
 		}
 	}
+	
 	public void mate(Organism org){
 		if(org.getSpecies() == species && getBoxRect().intersects(org.getBoxRect()))
 			System.out.println("Mate");
 	}
+	
 	public void hit(int dmg){
 		super.hit(dmg);
 		if(hitstart<0) hitstart = System.currentTimeMillis();
 	}
+	
 	public void collide(){ //prevents organism from entering rock
-		x=prevx;
-		y=prevy;
+		x = prevx;
+		y = prevy;
 		angle++;
 	}
 }

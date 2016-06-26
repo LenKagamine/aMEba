@@ -2,6 +2,7 @@ import java.awt.*;
 import java.io.*; // allows file access
 import javax.swing.*;
 import java.util.ArrayList;
+
 public class GodLevel extends Levels{
 	private Button[] btns;//Level Controls
 	private boolean buttonActivated;
@@ -11,6 +12,7 @@ public class GodLevel extends Levels{
 	private JFileChooser fc = new JFileChooser(); // file things
 	private File file;
 	private boolean unsavedFile = true;
+	
 	public GodLevel(){
 		super("gamebg.jpg");
 		map.setBorder(100);
@@ -44,6 +46,7 @@ public class GodLevel extends Levels{
 		bgm = new AudioPlayer("gamebgm.mp3");//music
 		bgm.loop();
 	}
+	
 	public void update(){
 		if(!paused){
 			if(Math.random()*20>berries.size()) berries.add(new Berry(map,Math.random()*(Level.WIDTH-200)+100,Math.random()*(Level.HEIGHT-200)+100)); // update berries
@@ -99,6 +102,7 @@ public class GodLevel extends Levels{
 			}
 		}
 	}
+	
 	public void spawnEnemy(int num){ // spawn random enemy
 		boolean stuck = true;
 		double newx = 100;
@@ -120,6 +124,7 @@ public class GodLevel extends Levels{
 			e.get(e.size()-1).setHealth();
 		}
 	}
+	
 	public void draw(Graphics2D g){
 		map.draw(g); // regular components
 		for(int i=0;i<e.size();i++) e.get(i).draw(g);
@@ -138,10 +143,12 @@ public class GodLevel extends Levels{
 			quit.draw(g);
 		}
 	}
+	
 	public void mouse(int mx,int my){ //update mouse
 		this.mx = mx;
 		this.my = my;
 	}
+	
 	public void click(int mx,int my){ // spawning, buttons, etc. caused by a click
 		buttonActivated = false;
 		if(pause.click(mx,my)){ // pause button
@@ -219,6 +226,7 @@ public class GodLevel extends Levels{
 				}
 		}
 	}
+	
 	public void saveAsFile () throws IOException{ // save as
 		int returnVal = fc.showSaveDialog(null); // show save dialog box
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -227,6 +235,7 @@ public class GodLevel extends Levels{
 			saveFile();
 		}
 	}
+	
 	public void saveFile () throws IOException{ // save file
 		if (unsavedFile){
 			saveAsFile();
@@ -243,6 +252,7 @@ public class GodLevel extends Levels{
 			fileout.close ();
 		}
 	}
+	
 	public void openFile () throws IOException{
 		int returnVal = fc.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) { // open dialog

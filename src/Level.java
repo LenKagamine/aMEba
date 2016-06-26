@@ -1,11 +1,13 @@
 import java.awt.*;
 import java.util.ArrayList;
+
 public class Level extends Levels{
 	private Player p;
 	private Button returner;
 	private boolean dead = false;
 	private long timer, elapsed;
 	private int time = 0;
+	
 	public Level(){
 		super("gamebg.jpg");
 		returner = new Button((GamePanel.WIDTH/2-100),400,200,50,"Return to Menu");
@@ -21,6 +23,7 @@ public class Level extends Levels{
 		quit = new Button(GamePanel.WIDTH/2-50,GamePanel.HEIGHT/2+200,100,50,"Quit Game");
 		timer = System.currentTimeMillis();
 	}
+	
 	public void update(){
 		if(!dead && !paused){
 			map.setPos(p.getScreenPos()); //map scrolling
@@ -110,6 +113,7 @@ public class Level extends Levels{
 			}
 		}
 	}
+	
 	public void restart(Graphics2D g){ //draws screen
 		g.setColor(Color.red);
 		g.fillRect(290, 90, GamePanel.WIDTH-580, GamePanel.HEIGHT-280);
@@ -121,6 +125,7 @@ public class Level extends Levels{
 		g.setFont(new Font("Tahoma",Font.PLAIN,48));
 		g.drawString("Score: " + time, (GamePanel.WIDTH-g.getFontMetrics().stringWidth(" Score: " + time))/2, 350);
 	}
+	
 	public void draw(Graphics2D g){ //draws all
 		map.draw(g);
 		for(int i=0;i<e.size();i++) e.get(i).draw(g);
@@ -143,6 +148,7 @@ public class Level extends Levels{
 			returner.draw(g);
 		}
 	}
+	
 	public void spawnEnemy(){ //spawns enemy
 		double newx = Math.random()*(Level.WIDTH-200)+100;
 		double newy = Math.random()*(Level.HEIGHT-200)+100;
@@ -154,9 +160,11 @@ public class Level extends Levels{
 		else if(Math.random()*30 <= 1) e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(p.getDNA().getSize()+Math.random()*2+3)));
 		else e.add(new Enemy(map,newx,newy,(int)(Math.random()*5),(int)(Math.random()*(p.getDNA().getSize()))+1));
 	}
+	
 	public void mouse(int mx,int my){
 		p.mouse(mx,my);
 	}
+	
 	public void click(int mx,int my){ 
 		p.click(mx,my);
 		if(pause.click(mx,my)) paused = !paused; //pauses/unpauses

@@ -1,14 +1,17 @@
 import java.awt.*;
+
 public class Player extends Organism{
 	private double mx,my;
 	private double prevx, prevy;
 	private boolean attacking;
+	
 	public Player(Map map,double x,double y,int species){
 		super(map,x,y,species,1);
 		angle = 0.0;
 		prevx = 100;
 		prevy = 100;
 	}
+	
 	public void update(){
 		super.update();
 		angle = Math.atan2(y-mapy-my,x-mapx-mx)+Math.PI; //finds angle
@@ -24,6 +27,7 @@ public class Player extends Organism{
 
 		attacking = false; //now not attacking
 	}
+	
 	public void draw(Graphics2D g){ //draws player
 		super.draw(g);
 		g.setColor(Color.black);
@@ -33,20 +37,25 @@ public class Player extends Organism{
 		g.setColor(Color.yellow);
 		g.drawString((int)health+"/"+(int)dna.getHealth(),(int)(GamePanel.WIDTH/2),(int)(GamePanel.HEIGHT-100)+25);
 	}
+	
 	public void mouse(int mx,int my){ //gets location
 		this.mx = mx;
 		this.my = my;
 	}
+	
 	public void click(int mx,int my){ //if clicked... player attacks
 		attacking = true;
 	}
+	
 	public boolean isAttacking(){
 		return attacking;
 	}
+	
 	public void collide(){ //prevents player from moving into rocks
 		x = prevx;
 		y = prevy;
 	}
+	
 	public double getHealth(){ //returns current health
 		return health;
 	}

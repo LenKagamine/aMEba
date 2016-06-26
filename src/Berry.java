@@ -3,6 +3,7 @@ import javax.imageio.ImageIO;
 
 public class Berry extends MapObject{
 	private int recover;
+	
 	public Berry(Map map,double x, double y){
 		super(map,x,y);
 		if(Math.random()*15 < 1){ //chance to become superberry
@@ -24,13 +25,16 @@ public class Berry extends MapObject{
 		width = img.getWidth();
 		height = img.getHeight();
 	}
+	
 	public void draw(Graphics2D g){ //draws berry
 		mapx = map.getX();
 		mapy = map.getY();
 
-		if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 && x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT)
+		if(x-mapx+width/2 > 0 && y-mapy+height/2 > 0 &&
+		   x-mapx-width/2 < GamePanel.WIDTH && y-mapy-height/2 < GamePanel.HEIGHT)
 			g.drawImage(img, (int)(x-mapx-width/2), (int)(y-mapy-height/2), null);
 	}
+	
 	public int recoverHealth(){ //returns amount to recover
 		return recover;
 	}

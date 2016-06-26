@@ -2,12 +2,14 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+
 public abstract class Organism extends MapObject{
 	protected double speed,angle; // general stats
 	protected double health;
 	protected DNA dna;
 	protected int species;
 	private long start;
+	
 	public Organism(Map map,double x,double y,int species,int level){
 		super(map,x,y);
 		this.species = species;
@@ -41,6 +43,7 @@ public abstract class Organism extends MapObject{
 
 		start = System.currentTimeMillis();
 	}
+	
 	public void update(){ // General Update method
 		long elapsed = System.currentTimeMillis();
 		if(elapsed-start>1000){
@@ -48,6 +51,7 @@ public abstract class Organism extends MapObject{
 			if(health > 0) health -= dna.getHunger();
 		}
 	}
+	
 	public void draw(Graphics2D g){ // scale, rotate, and draw
 		mapx = map.getX();
 		mapy = map.getY();
@@ -61,21 +65,27 @@ public abstract class Organism extends MapObject{
 			g.drawString((int)(dna.getSize())+"",(int)(x-mapx-width/2),(int)(y-mapy+height/2));
 		}
 	}
+	
 	public void hit(double dmg){ // deal damage
-		health = Math.max(health-dmg+getDNA().getDefense(),0);
+		if(dmg > getDNA().getDefense()) health = Math.max(health-dmg+getDNA().getDefense(),0);
 	}
+	
 	public int getSpecies(){ // get the species of the organism
 		return species;
 	}
+	
 	public boolean isDead(){ // return whether or not the organsim has died
 		return health<=0;
 	}
+	
 	public DNA getDNA(){ // return DNA file
 		return dna;
 	}
+	
 	public void setHealth(){ // Reset health to DNA max
 		health = dna.getHealth();
 	}
+	
 	public void consume(DNA dna2){ // amalgamate another DNA file with this one
 		if(species == 8) dna.playerAdd(dna2);
 		else dna.add(dna2);
@@ -88,6 +98,7 @@ public abstract class Organism extends MapObject{
 		boxwidth = width/2;
 		boxheight = height/2;
 	}
+	
 	public void consume(Berry berry){ // replenish health by proper amount for a berry
 		health += berry.recoverHealth();
 		if(this.health >= dna.getHealth()) this.health = dna.getHealth();

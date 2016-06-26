@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 		window.setContentPane(new GamePanel());
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//window.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-		//window.setUndecorated(true);
+		window.setUndecorated(true);
 		window.setResizable(false);
 		//window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.pack();
@@ -85,6 +85,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 		else if(state == 1) level.update();
 		else if(state == 2) godLevel.update();
 	}
+	
 	public void draw(){//Draw game
 		g.setColor(Color.white);
 		g.fillRect(0,0,WIDTH,HEIGHT);
@@ -92,11 +93,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 		else if(state == 1) level.draw(g);
 		else if(state == 2) godLevel.draw(g);
 	}
+	
 	public void drawToScreen(){ //Draw buffered image to level
 		Graphics g2 = getGraphics();
 		g2.drawImage(image,0,0,WIDTH,HEIGHT,null);
 		g2.dispose();
 	}
+	
 	public static void setLevel(int lv){
 		if(lv == 0){
 			menu = new Menu();
@@ -113,6 +116,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 		}
 		state = lv;
 	}
+	
 	public void mouseDragged(MouseEvent e){
 		try{
 			if(state == 0) menu.mouse(e.getX(),e.getY());
@@ -120,6 +124,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 			else if(state == 2) godLevel.mouse(e.getX(),e.getY());
 		} catch(Exception ex){}
 	}
+	
 	public void mouseMoved(MouseEvent e){
 		try{
 			if(state == 0) menu.mouse(e.getX(),e.getY());
@@ -127,6 +132,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, MouseM
 			else if(state == 2) godLevel.mouse(e.getX(),e.getY());
 		} catch(Exception ex){}
 	}
+	
 	public void mouseClicked(MouseEvent e){}
 	public void mouseEntered(MouseEvent e){}
 	public void mouseExited(MouseEvent e){}

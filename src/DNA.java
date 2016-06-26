@@ -7,7 +7,7 @@ public class DNA{
 		stats[0] = (Math.random()*3+3)*Math.sqrt(level);
 		stats[1] = (Math.random()*10+100)*level;
 		stats[2] = (Math.random()*10+100)*level;
-		stats[3] = (Math.random()*2+12)*Math.sqrt(level);
+		stats[3] = (Math.random()*2+12)*level;
 		stats[4] = (Math.random()*2+5)*level;
 		stats[5] = (Math.random()*2+1)*level;
 		stats[6] = (Math.random()*2+3)*level;
